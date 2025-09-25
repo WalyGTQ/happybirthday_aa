@@ -232,6 +232,20 @@
     body[data-theme="dark"] .play{color:var(--ink);}
     .play:focus-visible{outline:2px solid var(--sky); outline-offset:3px}
 
+    #surprise{position:relative; display:inline-flex; align-items:center; gap:.45rem; padding:.9rem 1.7rem; border-radius:999px; background:linear-gradient(135deg, rgba(251,191,36,.92), rgba(56,189,248,.88), rgba(232,121,249,.92)); color:#0b1220; font-family:'Playfair Display','Segoe Script','Lucida Handwriting','Brush Script MT',cursive; font-weight:600; font-size:clamp(18px, 4.6vw, 24px); letter-spacing:.045em; text-transform:none; text-shadow:0 2px 8px rgba(255,255,255,.65); box-shadow:0 20px 36px rgba(15,23,42,.45), inset 0 1px 0 rgba(255,255,255,.5); transform-style:preserve-3d; perspective:900px; transform:translate3d(0,0,0); transition:transform .4s var(--ease), box-shadow .4s var(--ease), color .4s var(--ease); animation:surpriseFloat 6.6s ease-in-out infinite; isolation:isolate; overflow:visible;}
+    body[data-theme="light"] #surprise{color:#1f2937; box-shadow:0 16px 28px rgba(148,163,209,.45), inset 0 1px 0 rgba(255,255,255,.65);}
+    body[data-theme="dark"] #surprise{color:#0b1220;}
+    #surprise::before{content:""; position:absolute; inset:-26% -20%; border-radius:inherit; background:radial-gradient(circle at 50% 45%, rgba(255,255,255,.85), rgba(251,191,36,.42), rgba(14,116,144,0)); filter:blur(8px); opacity:.85; z-index:-2; animation:surpriseAura 4.4s ease-in-out infinite; pointer-events:none;}
+    #surprise::after{content:""; position:absolute; inset:8%; border-radius:inherit; background:radial-gradient(120% 140% at 28% 22%, rgba(255,255,255,.78), rgba(255,255,255,0)); mix-blend-mode:screen; opacity:.8; transition:opacity .4s var(--ease); pointer-events:none;}
+    #surprise:hover{animation-play-state:paused; transform:translate3d(0,-8px,14px) rotateX(8deg) rotateY(-6deg); box-shadow:0 28px 46px rgba(15,23,42,.52), inset 0 2px 0 rgba(255,255,255,.68);}
+    body[data-theme="light"] #surprise:hover{box-shadow:0 26px 36px rgba(148,163,209,.5), inset 0 2px 0 rgba(255,255,255,.82);}
+    #surprise:hover::after{opacity:1;}
+    #surprise:active{transform:translate3d(0,-2px,6px) scale(.98); animation-play-state:paused; box-shadow:0 18px 26px rgba(15,23,42,.46), inset 0 1px 0 rgba(255,255,255,.55);}
+    #surprise:focus-visible{outline:2px solid rgba(251,191,36,.85); outline-offset:4px;}
+    @keyframes surpriseFloat{0%,100%{transform:translate3d(0,0,0) rotateX(0deg) rotateY(0deg);}50%{transform:translate3d(0,-10px,12px) rotateX(6deg) rotateY(-5deg);}}
+    @keyframes surpriseAura{0%,100%{transform:scale(1); opacity:.78;}50%{transform:scale(1.08); opacity:1;}}
+
+
 
     #fx{position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:75; opacity:0; transition:opacity .7s var(--ease);}
     #fx.is-active{opacity:1;}
