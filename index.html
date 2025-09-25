@@ -179,10 +179,21 @@
 
 
     /* COUNTDOWN */
-    .countdown{display:grid; place-items:center; gap:8px}
-    .countdown .pill{display:inline-grid; grid-auto-flow:column; gap:10px; align-items:center; padding:10px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.2); background:var(--glass)}
-    .digits{display:grid; grid-auto-flow:column; gap:12px; font-variant-numeric: tabular-nums; letter-spacing:.06em; font-weight:700}
-    .digits span{min-width:2ch; text-align:center}
+    .countdown{display:grid; place-items:center; gap:18px; text-align:center}
+    .countdown-title{font-size:clamp(22px, 4vw, 32px); letter-spacing:.08em; text-transform:uppercase; font-weight:700; color:var(--ink);}
+    .countdown-card{position:relative; width:min(620px, 92vw); margin-inline:auto; padding:28px clamp(18px, 6vw, 42px); border-radius:28px; background:linear-gradient(145deg, rgba(15,23,42,.55), rgba(30,41,59,.32)); border:1px solid rgba(148,163,209,.24); box-shadow:0 22px 45px rgba(15,23,42,.32); backdrop-filter:blur(18px) saturate(140%); -webkit-backdrop-filter:blur(18px) saturate(140%); overflow:hidden;}
+    .countdown-card::before{content:""; position:absolute; inset:-40% -20% auto; height:160%; background:radial-gradient(ellipse at top, rgba(248,172,120,.22), transparent 65%); opacity:.45; transform:rotate(6deg); pointer-events:none;}
+    .countdown-card::after{content:""; position:absolute; inset:2px; border-radius:inherit; border:1px solid rgba(255,255,255,.12); mix-blend-mode:overlay; pointer-events:none;}
+    .countdown-grid{position:relative; z-index:1; display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:18px;}
+    .time-cell{position:relative; padding:18px 12px 16px; border-radius:22px; background:linear-gradient(160deg, rgba(148,163,209,.24), rgba(15,23,42,.45)); border:1px solid rgba(148,163,209,.35); box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 12px 24px rgba(15,23,42,.32); display:grid; gap:6px; justify-items:center;}
+    .time-cell::before{content:""; position:absolute; inset:6px; border-radius:18px; background:linear-gradient(120deg, rgba(248,172,120,.25), rgba(232,121,249,.18)); opacity:.4; filter:blur(18px); pointer-events:none;}
+    .time-cell .value{position:relative; color:var(--ink); font-size:clamp(32px, 6vw, 46px); font-weight:700; letter-spacing:.12em; font-variant-numeric:tabular-nums; text-shadow:0 8px 18px rgba(15,23,42,.4);}
+    .time-cell .label{position:relative; font-size:.75rem; text-transform:uppercase; letter-spacing:.24em; font-weight:600; color:rgba(226,232,240,.85);}
+    body[data-theme="light"] .countdown-card{background:linear-gradient(145deg, rgba(241,245,249,.88), rgba(255,255,255,.74)); border-color:rgba(30,41,59,.14); box-shadow:0 22px 45px rgba(15,23,42,.18);}
+    body[data-theme="light"] .countdown-card::before{background:radial-gradient(ellipse at top, rgba(248,172,120,.32), transparent 70%);}
+    body[data-theme="light"] .time-cell{background:linear-gradient(160deg, rgba(255,255,255,.95), rgba(226,232,240,.78)); border-color:rgba(148,163,209,.32); box-shadow:inset 0 1px 0 rgba(255,255,255,.8), 0 14px 26px rgba(148,163,209,.28);}
+    body[data-theme="light"] .time-cell::before{background:linear-gradient(160deg, rgba(248,172,120,.32), rgba(232,121,249,.22)); opacity:.5;}
+    body[data-theme="light"] .time-cell .label{color:rgba(71,85,105,.82);}
 
     /* GALLERY */
     .gallery .grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
@@ -289,13 +300,26 @@
     <!-- COUNTDOWN / TODAY NOTE -->
     <section class="countdown section" aria-live="polite">
       <div class="wrap center">
+        <h2 class="countdown-title">Mi Próximo Cumpleaños</h2>
         <p id="today-note" class="muted"></p>
-        <div class="pill">
-          <strong class="muted">Cuenta atrás demo:</strong>
-          <div class="digits" id="digits" aria-label="Cuenta atrás a medianoche">
-            <span id="d-h">00</span>:
-            <span id="d-m">00</span>:
-            <span id="d-s">00</span>
+        <div class="countdown-card">
+          <div class="countdown-grid" id="digits" aria-label="Cuenta atrás para el próximo cumpleaños">
+            <div class="time-cell">
+              <span id="d-day" class="value">000</span>
+              <span class="label">Días</span>
+            </div>
+            <div class="time-cell">
+              <span id="d-h" class="value">00</span>
+              <span class="label">Horas</span>
+            </div>
+            <div class="time-cell">
+              <span id="d-m" class="value">00</span>
+              <span class="label">Minutos</span>
+            </div>
+            <div class="time-cell">
+              <span id="d-s" class="value">00</span>
+              <span class="label">Segundos</span>
+            </div>
           </div>
         </div>
       </div>
@@ -674,22 +698,44 @@
     document.addEventListener('scroll', onToTop, {passive:true}); onToTop();
     toTop.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
 
-    // COUNTDOWN (demo to midnight)
+    // COUNTDOWN (next birthday)
+    const dd = document.getElementById('d-day');
     const dh = document.getElementById('d-h');
     const dm = document.getElementById('d-m');
     const ds = document.getElementById('d-s');
     const note = document.getElementById('today-note');
-    const now = new Date();
-    const midnight = new Date(now); midnight.setHours(24,0,0,0);
-    note.textContent = `Hoy es ${now.toLocaleDateString(undefined,{weekday:'long', year:'numeric', month:'long', day:'numeric'})}`;
+    const today = new Date();
+    note.textContent = `Hoy es ${today.toLocaleDateString(undefined,{weekday:'long', year:'numeric', month:'long', day:'numeric'})}`;
+
+    const BIRTHDAY_MONTH = 8; // September (0-index)
+    const BIRTHDAY_DAY = 25;
+
+    const getNextBirthday = (reference)=>{
+      const target = new Date(reference.getFullYear(), BIRTHDAY_MONTH, BIRTHDAY_DAY, 0, 0, 0, 0);
+      if(target <= reference){
+        target.setFullYear(target.getFullYear() + 1);
+      }
+
+      return target;
+    };
+
+    let birthdayTarget = getNextBirthday(today);
+
     function tick(){
-      const t = Math.max(0, midnight - new Date());
-      const s = Math.floor(t/1000)%60;
-      const m = Math.floor(t/60000)%60;
-      const h = Math.floor(t/3600000);
-      dh.textContent = String(h).padStart(2,'0');
-      dm.textContent = String(m).padStart(2,'0');
-      ds.textContent = String(s).padStart(2,'0');
+      const current = new Date();
+      if(current > birthdayTarget){
+        birthdayTarget = getNextBirthday(current);
+      }
+      const totalSeconds = Math.max(0, Math.floor((birthdayTarget - current) / 1000));
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      dd.textContent = String(days).padStart(3,'0');
+      dh.textContent = String(hours).padStart(2,'0');
+      dm.textContent = String(minutes).padStart(2,'0');
+      ds.textContent = String(seconds).padStart(2,'0');
       requestAnimationFrame(tick);
     }
     tick();
@@ -737,3 +783,4 @@
   </script>
 </body>
 </html>
+
