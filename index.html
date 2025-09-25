@@ -2,9 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>¡Feliz Cumpleaños, Aby Alvarez! — 23</title>
-  <meta name="description" content="Landing móvil con parallax, motion graphics y animaciones sutiles para celebrar los 23 de Aby Alvarez." />
+  <title>&iexcl;Feliz Cumplea&ntilde;os, Aby Alvarez! &mdash; 23</title>
+  <meta name="description" content="Landing m&oacute;vil con parallax, motion graphics y animaciones sutiles para celebrar los 23 de Aby Alvarez." />
   <meta name="theme-color" content="#0F172A" />
   <style>
     :root{
@@ -196,13 +197,30 @@
     body[data-theme="light"] .time-cell .label{color:rgba(71,85,105,.82);}
 
     /* GALLERY */
-    .gallery .grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
-    @media(min-width:760px){ .gallery .grid{grid-template-columns:repeat(3,1fr)} }
-    .ph{position:relative; overflow:hidden; border-radius:14px; transform:translateY(12px); opacity:0; transition:transform .8s var(--ease), opacity .8s var(--ease)}
-    .ph.is-visible{transform:translateY(0); opacity:1}
-    .ph img{display:block; width:100%; height:100%; object-fit:cover; filter:saturate(1.05)}
-    .ph::after{content:""; position:absolute; inset:0; mask-image: radial-gradient(90% 70% at 50% 50%, #000 60%, transparent 80%); -webkit-mask-image: radial-gradient(90% 70% at 50% 50%, #000 60%, transparent 80%); box-shadow: inset 0 0 0 2px rgba(255,255,255,.14); border-radius:14px; pointer-events:none}
-    .ph:hover img{transform:scale(1.03); transition: transform .6s var(--ease)}
+    .gallery{position:relative;}
+    .gallery .wrap{display:grid; gap:18px; text-align:center;}
+    .gallery-note{max-width:520px; margin:0 auto; color:rgba(226,232,240,.78);}
+    .carousel-wrap{position:relative; width:min(640px, 88vw); margin-inline:auto; perspective:1200px;}
+    .carousel-wrap::after{content:""; position:absolute; inset:auto 10% -36px 10%; height:48px; border-radius:50%; background:radial-gradient(circle, rgba(232,121,249,.48), rgba(56,189,248,.18) 48%, transparent 70%); filter:blur(14px); opacity:.65; pointer-events:none;}
+    .carousel-stage{position:relative; padding-top:60%;}
+    .carousel{position:absolute; inset:0; transform-style:preserve-3d; animation:carousel-spin 22s linear infinite; width:100%; height:100%;}
+    .carousel.is-paused{animation-play-state:paused;}
+    .carousel:hover{animation-play-state:paused;}
+    .carousel-item{--radius: clamp(240px, 36vw, 320px); --tilt: -6deg; position:absolute; top:50%; left:50%; width:clamp(190px,32vw,240px); aspect-ratio:3/4; border-radius:26px; overflow:hidden; transform-style:preserve-3d; transform:rotateY(calc(var(--index) * 120deg)) translateZ(var(--radius)) rotateX(var(--tilt)) translateY(-50%); box-shadow:0 24px 36px rgba(15,23,42,.35), inset 0 1px 0 rgba(255,255,255,.2); opacity:0; transition:opacity .8s var(--ease), transform .8s var(--ease);}
+    .carousel-item.is-visible{opacity:1;}
+    .carousel.is-ready .carousel-item{opacity:1;}
+    .carousel-item::before{content:""; position:absolute; inset:-18%; border-radius:32px; background:conic-gradient(from 120deg, rgba(56,189,248,.25), rgba(232,121,249,.25), rgba(248,172,120,.25), rgba(56,189,248,.25)); mix-blend-mode:screen; opacity:.55; filter:blur(18px); pointer-events:none;}
+    .carousel-item::after{content:""; position:absolute; inset:0; border-radius:inherit; border:1px solid rgba(255,255,255,.22); mix-blend-mode:overlay; pointer-events:none;}
+    .carousel-item img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:saturate(1.12) contrast(1.02); transform:scale(1.02);}
+    body[data-theme="light"] .gallery-note{color:rgba(71,85,105,.75);}
+    body[data-theme="light"] .carousel-wrap::after{background:radial-gradient(circle, rgba(232,121,249,.38), rgba(56,189,248,.18) 52%, transparent 72%); opacity:.72;}
+    body[data-theme="light"] .carousel-item{box-shadow:0 20px 30px rgba(148,163,209,.32), inset 0 1px 0 rgba(255,255,255,.7); background:linear-gradient(160deg, rgba(255,255,255,.75), rgba(226,232,240,.68));}
+    body[data-theme="light"] .carousel-item::after{border-color:rgba(148,163,209,.24);}
+    @keyframes carousel-spin{to{transform:rotateY(-360deg);}}
+    @media (prefers-reduced-motion: reduce){
+      .carousel{animation-duration:120s;}
+      .carousel-item{transform:rotateY(calc(var(--index) * 120deg)) translateZ(calc(var(--radius)*.8)) rotateX(-4deg) translateY(-50%);}
+    }
 
     /* CLOSING / SURPRISE */
     .closing{display:grid; place-items:center; text-align:center; padding-bottom:120px}
@@ -236,7 +254,7 @@
         <span>Celebrando a Aby Alvarez</span>
       </div>
       <button id="theme" class="toggle" aria-pressed="false" aria-label="Cambiar tema claro/oscuro">
-        <span aria-hidden="true">🌓</span><span class="muted">Tema</span>
+        <span aria-hidden="true">&#127763;</span><span class="muted">Tema</span>
       </button>
     </div>
   </header>
@@ -251,8 +269,8 @@
         <div class="layer balloons" aria-hidden="true"></div>
       </div>
       <div class="hero-content wrap">
-        <h1 id="t-hero" class="title" aria-live="polite">¡Feliz Cumpleaños, Aby Alvarez!</h1>
-        <p class="subtitle">Un abrazo con mucho cariño</p>
+        <h1 id="t-hero" class="title" aria-live="polite">&iexcl;Feliz Cumplea&ntilde;os, Aby Alvarez!</h1>
+        <p class="subtitle">Un abrazo con mucho cari&ntilde;o</p>
       </div>
       <div class="scroll-hint" aria-hidden="true">
         <div class="chev"></div>
@@ -261,11 +279,11 @@
     </section>
 
     <!-- STORY / MESSAGE -->
-    <section class="story section" aria-label="Mensaje de cariño">
+    <section class="story section" aria-label="Mensaje de cari&ntilde;o">
       <canvas id="story-flowers" class="story-flowers" aria-hidden="true"></canvas>
       <span class="decor" aria-hidden="true"></span>
       <div class="wrap">
-        <p class="reveal">Que este nuevo año esté lleno de alegría genuina, metas cumplidas y momentos que te hagan sonreír con el alma.</p>
+        <p class="reveal">Que este nuevo a&ntilde;o est&eacute; lleno de alegr&iacute;a genuina, metas cumplidas y momentos que te hagan sonre&iacute;r con el alma.</p>
         <p class="reveal">Gracias por ser luz en la vida de quienes te rodean. Hoy celebramos tu historia, tu presente y todo lo bello que viene.</p>
       </div>
     </section>
@@ -273,23 +291,23 @@
     <!-- HIGHLIGHTS -->
     <section class="highlights section" aria-labelledby="t-high">
       <div class="wrap">
-        <h2 id="t-high" class="center" style="letter-spacing:.06em">Pequeños Highlights</h2>
+        <h2 id="t-high" class="center" style="letter-spacing:.06em">Peque&ntilde;os Highlights</h2>
         <div class="grid" style="margin-top:16px">
           <article class="card reveal" role="article" aria-label="Tu sonrisa que ilumina">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20Zm0 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3Zm0 14a7 7 0 01-6.32-4h2.19A5 5 0 0012 17a5 5 0 004.13-2H18.3A7 7 0 0112 19Z"/></svg>
             <h3>Tu sonrisa que ilumina</h3>
-            <p class="muted">Esa chispa que alegra días nublados y convierte momentos simples en memorables.</p>
+            <p class="muted">Esa chispa que alegra d&iacute;as nublados y convierte momentos simples en memorables.</p>
             <i class="spec" aria-hidden="true"></i>
           </article>
-          <article class="card reveal" role="article" aria-label="Tus sueños que crecen">
+          <article class="card reveal" role="article" aria-label="Tus sue&ntilde;os que crecen">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3l7 4v6c0 5-7 8-7 8s-7-3-7-8V7l7-4Zm0 3.2L7 8v4.8c0 3.52 3.83 5.9 5 6.53 1.17-.63 5-3.01 5-6.53V8l-5-1.8Z"/></svg>
-            <h3>Tus sueños que crecen</h3>
-            <p class="muted">Paso a paso, constancia y corazón: lo mejor aún está por venir.</p>
+            <h3>Tus sue&ntilde;os que crecen</h3>
+            <p class="muted">Paso a paso, constancia y coraz&oacute;n: lo mejor a&uacute;n est&aacute; por venir.</p>
             <i class="spec" aria-hidden="true"></i>
           </article>
-          <article class="card reveal" role="article" aria-label="Tu energía que inspira">
+          <article class="card reveal" role="article" aria-label="Tu energ&iacute;a que inspira">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11 21h-1l1-7H7l6-11h1l-1 7h4l-6 11Z"/></svg>
-            <h3>Tu energía que inspira</h3>
+            <h3>Tu energ&iacute;a que inspira</h3>
             <p class="muted">Tu presencia motiva, empuja y enciende nuevas ideas en todos.</p>
             <i class="spec" aria-hidden="true"></i>
           </article>
@@ -300,13 +318,13 @@
     <!-- COUNTDOWN / TODAY NOTE -->
     <section class="countdown section" aria-live="polite">
       <div class="wrap center">
-        <h2 class="countdown-title">Mi Próximo Cumpleaños</h2>
+        <h2 class="countdown-title">Mi Pr&oacute;ximo Cumplea&ntilde;os</h2>
         <p id="today-note" class="muted"></p>
         <div class="countdown-card">
-          <div class="countdown-grid" id="digits" aria-label="Cuenta atrás para el próximo cumpleaños">
+          <div class="countdown-grid" id="digits" aria-label="Cuenta atr&aacute;s para el pr&oacute;ximo cumplea&ntilde;os">
             <div class="time-cell">
               <span id="d-day" class="value">000</span>
-              <span class="label">Días</span>
+              <span class="label">D&iacute;as</span>
             </div>
             <div class="time-cell">
               <span id="d-h" class="value">00</span>
@@ -325,17 +343,25 @@
       </div>
     </section>
 
-    <!-- GALLERY (placeholders base64) -->
+    <!-- GALLERY -->
     <section class="gallery section" aria-labelledby="t-gal">
       <div class="wrap">
         <h2 id="t-gal" class="center" style="letter-spacing:.06em">Recuerdos</h2>
-        <div class="grid" style="margin-top:16px">
-          <figure class="ph reveal"><img loading="lazy" alt="Luz bokeh cálida" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNTAwJyBoZWlnaHQ9JzQwMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9J2cnIHgxPScwJyB5MT0nMCcgeDI9JzEnIHkyPScxJz48c3RvcCBvZmZzZXQ9JzAnIHN0b3AtY29sb3I9JyNmNGQxOTYnLz48c3RvcCBvZmZzZXQ9JzEnIHN0b3AtY29sb3I9JyNlZWM2YjMnLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWxsPSJ1cmwoI2cpIi8+PC9zdmc+"/></figure>
-          <figure class="ph reveal"><img loading="lazy" alt="Globos y destellos" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNTAwJyBoZWlnaHQ9JzQwMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48Y2lyY2xlIGN4PScxNTAnIGN5PScxNTAiIHI9JzgwJyBmaWxsPSIjZWE3OWY5Ii8+PGNpcmNsZSBjeD0nMzUwJyBjeT0nMjUwJyByPSc2MCcgZmlsbD0iI2Y1OWUwYiIvPjwvc3ZnPg=="/></figure>
-          <figure class="ph reveal"><img loading="lazy" alt="Cielo en tonos magenta" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNTAwJyBoZWlnaHQ9JzQwMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48bGluZWFyR3JhZGllbnQgaWQ9J2EnIHgxPScwJyB5MT0nMCcgeDI9JzEnIHkyPScxJz48c3RvcCBvZmZzZXQ9JzAnIHN0b3AtY29sb3I9IiNmOGE1ZTAiLz48c3RvcCBvZmZzZXQ9JzEnIHN0b3AtY29sb3I9IiMzOGJkZjgiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbGw9InVybCgjYSkiLz48L3N2Zz4="/></figure>
-          <figure class="ph reveal"><img loading="lazy" alt="Confeti difuso" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNTAwJyBoZWlnaHQ9JzQwMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWxsPSIjMGYxNzJhIi8+PGNpcmNsZSBjeD0nNDAiIGN5PScyMDAiIHI9JzEwJyBmaWxsPSIjZWE3OWY5Ii8+PGNpcmNsZSBjeD0nMjgwJyBjeT0nMzAnIHI9JzgnIGZpbGw9IiNmNTllMGIiLz48Y2lyY2xlIGN4PSc0NDAiIGN5PSczMjAnIHI9JzEwJyBmaWxsPSIjMzhiZGY4Ii8+PC9zdmc+"/></figure>
-          <figure class="ph reveal"><img loading="lazy" alt="Brillos suaves" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNTAwJyBoZWlnaHQ9JzQwMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48ZGVmcz48cmFkaWFsR3JhZGllbnQgaWQ9InIiIGN4PSI1MCUiIGN5PSI1MCUiIHI9IjYwJSI+PHN0b3Agb2Zmc2V0PSIuMCIgc3RvcC1jb2xvcj0iI2VlZWUiLz48c3RvcCBvZmZzZXQ9Ii45IiBzdG9wLWNvbG9yPSJyZ2JhKDI1NSwyNTUsMjU1LDApIi8+PC9yYWRpYWxHcmFkaWVudD48L2RlZnM+PGNpcmNsZSBjeD0iNTAiIGN5PSI0MCIgcj0iNDAiIGZpbGw9InVybCgjcikiIG9wYWNpdHk9Ii40Ii8+PC9zdmc+"/></figure>
-          <figure class="ph reveal"><img loading="lazy" alt="Destello dorado" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNTAwJyBoZWlnaHQ9JzQwMCcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImQiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmNWFlMmIiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNmZmVjY2UiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZCkiLz48L3N2Zz4="/></figure>
+        <p class="gallery-note muted">Tres destellos flotando para recordar momentos especiales. Puedes reemplazar cada imagen por tus propios recuerdos favoritos.</p>
+        <div class="carousel-wrap">
+          <div class="carousel-stage">
+            <div class="carousel" id="memories" aria-label="Carrusel tridimensional de recuerdos">
+              <figure class="carousel-item" style="--index:0">
+                <img loading="lazy" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80" alt="Brindis con luces c&aacute;lidas" />
+              </figure>
+              <figure class="carousel-item" style="--index:1">
+                <img loading="lazy" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=600&q=80" alt="Personas sonriendo entre confeti" />
+              </figure>
+              <figure class="carousel-item" style="--index:2">
+                <img loading="lazy" src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=600&q=80" alt="Globos magenta y azul en un cielo nocturno" />
+              </figure>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -343,17 +369,17 @@
     <!-- CLOSING -->
     <section class="closing section" aria-label="Buenos deseos y firma">
       <div class="wrap">
-        <h2 class="big" id="final-text">Muchas Felicidades! Aby — feliz Cumpleaños<div class="sweep" id="sweep" aria-hidden="true"></div></h2>
-        <p class="muted">Con cariño, tu familia y amigos.</p>
-        <button id="surprise" class="play" aria-controls="fx" aria-expanded="false">Reproducir sorpresa ✨</button>
+        <h2 class="big" id="final-text">Muchas Felicidades! Aby &mdash; feliz Cumplea&ntilde;os<div class="sweep" id="sweep" aria-hidden="true"></div></h2>
+        <p class="muted">Con cari&ntilde;o, tu familia y amigos.</p>
+        <button id="surprise" class="play" aria-controls="fx" aria-expanded="false">Reproducir sorpresa &#10024;</button>
       </div>
       <canvas id="fx" width="600" height="300" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none;"></canvas>
     </section>
   </main>
 
-  <button class="to-top" id="toTop" aria-label="Volver arriba">↑</button>
+  <button class="to-top" id="toTop" aria-label="Volver arriba">&uarr;</button>
   <footer class="wrap">
-    <small>Hecho con ♥ para celebrar a Aby Alvarez.</small>
+    <small>Hecho con &hearts; para celebrar a Aby Alvarez.</small>
   </footer>
 
   <script>
@@ -651,6 +677,21 @@
     }, {threshold:.2});
 
 
+    const memoriesCarousel = document.getElementById('memories');
+    if(memoriesCarousel){
+      let resumeTimer;
+      const pause = ()=> memoriesCarousel.classList.add('is-paused');
+      const play = ()=> memoriesCarousel.classList.remove('is-paused');
+      requestAnimationFrame(()=> memoriesCarousel.classList.add('is-ready'));
+      memoriesCarousel.addEventListener('pointerenter', pause);
+      memoriesCarousel.addEventListener('pointerleave', play);
+      memoriesCarousel.addEventListener('touchstart', ()=>{
+        pause();
+        if(resumeTimer){ clearTimeout(resumeTimer); }
+        resumeTimer = setTimeout(play, 2800);
+      }, {passive:true});
+    }
+
     const highlightsGrid = document.querySelector('.highlights .grid');
     if(highlightsGrid){
       const highlightCards = [...highlightsGrid.querySelectorAll('.card')];
@@ -670,7 +711,7 @@
       highlightObserver.observe(highlightsGrid);
     }
 
-    document.querySelectorAll('.story .wrap, .ph').forEach(el=> io.observe(el.closest('.story .wrap') || el));
+    document.querySelectorAll('.story .wrap, .carousel-item').forEach(el=> io.observe(el.closest('.story .wrap') || el));
 
     // CARD INTERACTION (press glow)
     document.querySelectorAll('.card').forEach((card)=>{
@@ -783,4 +824,3 @@
   </script>
 </body>
 </html>
-
