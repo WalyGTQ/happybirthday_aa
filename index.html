@@ -237,6 +237,17 @@
     .to-top{position:fixed; right:14px; bottom:14px; z-index:50; border-radius:999px; width:46px; height:46px; display:grid; place-items:center; border:1px solid rgba(255,255,255,.3); background:var(--glass); box-shadow:var(--shadow-tiny); opacity:0; transform:translateY(10px); pointer-events:none; transition:opacity .3s, transform .3s}
     .to-top.show{opacity:1; transform:translateY(0); pointer-events:auto}
 
+    .audio-toggle{position:fixed; left:14px; bottom:14px; z-index:60; width:48px; height:48px; display:grid; place-items:center; border-radius:999px; border:1px solid rgba(255,255,255,.32); background:var(--glass); color:inherit; box-shadow:0 10px 20px rgba(15,23,42,.26); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); cursor:pointer; transition:transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease), opacity .3s var(--ease);}
+    .audio-toggle::before{content:""; position:absolute; inset:-6px; border-radius:inherit; background:conic-gradient(from 0deg, rgba(232,121,249,.45), rgba(248,172,120,.36), rgba(56,189,248,.38), rgba(232,121,249,.45)); filter:blur(12px); opacity:.6; z-index:-1; animation:audioGlow 5.2s linear infinite;}
+    .audio-toggle .icon{font-size:1.15rem; line-height:1;}
+    .audio-toggle:hover{transform:translateY(-2px); box-shadow:0 18px 32px rgba(15,23,42,.34);}
+    .audio-toggle:focus-visible{outline:2px solid var(--sky); outline-offset:4px;}
+    .audio-toggle.is-paused{border-color:rgba(255,255,255,.24); opacity:.88;}
+    .audio-toggle.is-paused::before{animation-duration:6.8s; opacity:.45;}
+    body[data-theme="light"] .audio-toggle{background:rgba(248,250,252,.92); color:#0f172a; border-color:rgba(148,163,209,.4); box-shadow:0 14px 26px rgba(148,163,209,.26);}
+    body[data-theme="light"] .audio-toggle::before{background:conic-gradient(from 0deg, rgba(232,121,249,.5), rgba(248,172,120,.36), rgba(56,189,248,.42), rgba(232,121,249,.5));}
+    @keyframes audioGlow{to{transform:rotate(360deg);}}
+
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
       *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration: .001ms !important; scroll-behavior:auto !important}
@@ -246,6 +257,7 @@
   </style>
 </head>
 <body data-theme="dark">
+  <audio id="bg-audio" src="asset/audio.mp3" preload="auto" autoplay playsinline></audio>
   <a href="#main" class="sr-only">Saltar al contenido</a>
   <header class="site" role="banner" aria-label="Barra superior">
     <div class="wrap">
@@ -283,32 +295,32 @@
       <canvas id="story-flowers" class="story-flowers" aria-hidden="true"></canvas>
       <span class="decor" aria-hidden="true"></span>
       <div class="wrap">
-        <p class="reveal">Que este nuevo a&ntilde;o est&eacute; lleno de alegr&iacute;a genuina, metas cumplidas y momentos que te hagan sonre&iacute;r con el alma.</p>
-        <p class="reveal">Gracias por ser luz en la vida de quienes te rodean. Hoy celebramos tu historia, tu presente y todo lo bello que viene.</p>
+        <p class="reveal">Que este nuevo a&ntilde;o est&eacute; lleno de alegr&iacute;a genuina, metas cumplidas y momentos que le hagan sonre&iacute;r con el alma.</p>
+        <p class="reveal">Que sea siempre luz en la vida de quienes la rodean. Hoy celebramos su historia, su presente y todo lo bello que viene.</p>
       </div>
     </section>
 
     <!-- HIGHLIGHTS -->
     <section class="highlights section" aria-labelledby="t-high">
       <div class="wrap">
-        <h2 id="t-high" class="center" style="letter-spacing:.06em">Peque&ntilde;os Highlights</h2>
+        <h2 id="t-high" class="center" style="letter-spacing:.06em">Peque&ntilde;os Detalles de Grandeza</h2>
         <div class="grid" style="margin-top:16px">
           <article class="card reveal" role="article" aria-label="Tu sonrisa que ilumina">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20Zm0 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3Zm0 14a7 7 0 01-6.32-4h2.19A5 5 0 0012 17a5 5 0 004.13-2H18.3A7 7 0 0112 19Z"/></svg>
-            <h3>Tu sonrisa que ilumina</h3>
+            <h3>La sonrisa que ilumina</h3>
             <p class="muted">Esa chispa que alegra d&iacute;as nublados y convierte momentos simples en memorables.</p>
             <i class="spec" aria-hidden="true"></i>
           </article>
           <article class="card reveal" role="article" aria-label="Tus sue&ntilde;os que crecen">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3l7 4v6c0 5-7 8-7 8s-7-3-7-8V7l7-4Zm0 3.2L7 8v4.8c0 3.52 3.83 5.9 5 6.53 1.17-.63 5-3.01 5-6.53V8l-5-1.8Z"/></svg>
-            <h3>Tus sue&ntilde;os que crecen</h3>
-            <p class="muted">Paso a paso, constancia y coraz&oacute;n: lo mejor a&uacute;n est&aacute; por venir.</p>
+            <h3>Los sue&ntilde;os que crecen</h3>
+            <p class="muted">Paso a paso, constancia y Dios en el coraz&oacute;n: lo mejor a&uacute;n est&aacute; por venir.</p>
             <i class="spec" aria-hidden="true"></i>
           </article>
           <article class="card reveal" role="article" aria-label="Tu energ&iacute;a que inspira">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11 21h-1l1-7H7l6-11h1l-1 7h4l-6 11Z"/></svg>
-            <h3>Tu energ&iacute;a que inspira</h3>
-            <p class="muted">Tu presencia motiva, empuja y enciende nuevas ideas en todos.</p>
+            <h3>La energ&iacute;a que inspira</h3>
+            <p class="muted">Su presencia motiva, empuja y enciende nuevas ideas en todos.</p>
             <i class="spec" aria-hidden="true"></i>
           </article>
         </div>
@@ -347,18 +359,18 @@
     <section class="gallery section" aria-labelledby="t-gal">
       <div class="wrap">
         <h2 id="t-gal" class="center" style="letter-spacing:.06em">Recuerdos</h2>
-        <p class="gallery-note muted">Tres destellos flotando para recordar momentos especiales. Puedes reemplazar cada imagen por tus propios recuerdos favoritos.</p>
+        <p class="gallery-note muted">Tres destellos flotando para recordar momentos especiales, atrapados en el espacio-tiempo, recordando ¿quien soy? </p>
         <div class="carousel-wrap">
           <div class="carousel-stage">
             <div class="carousel" id="memories" aria-label="Carrusel tridimensional de recuerdos">
               <figure class="carousel-item" style="--index:0">
-                <img loading="lazy" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80" alt="Brindis con luces c&aacute;lidas" />
+                <img loading="lazy" src="asset/img1.jpg" />
               </figure>
               <figure class="carousel-item" style="--index:1">
-                <img loading="lazy" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=600&q=80" alt="Personas sonriendo entre confeti" />
+                <img loading="lazy" src="asset/img2.jpg" />
               </figure>
               <figure class="carousel-item" style="--index:2">
-                <img loading="lazy" src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=600&q=80" alt="Globos magenta y azul en un cielo nocturno" />
+                <img loading="lazy" src="asset/img3.jpg" />
               </figure>
             </div>
           </div>
@@ -369,14 +381,17 @@
     <!-- CLOSING -->
     <section class="closing section" aria-label="Buenos deseos y firma">
       <div class="wrap">
-        <h2 class="big" id="final-text">Muchas Felicidades! Aby &mdash; feliz Cumplea&ntilde;os<div class="sweep" id="sweep" aria-hidden="true"></div></h2>
-        <p class="muted">Con cari&ntilde;o, tu familia y amigos.</p>
+        <h2 class="big" id="final-text">Muchas Felicidades! <div class="sweep" id="sweep" aria-hidden="true"></div></h2>
+        <p class="muted">Con cari&ntilde;o, W.A.</p>
         <button id="surprise" class="play" aria-controls="fx" aria-expanded="false">Reproducir sorpresa &#10024;</button>
       </div>
       <canvas id="fx" width="600" height="300" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none;"></canvas>
     </section>
   </main>
 
+  <button class="audio-toggle" id="audio-toggle" aria-pressed="true" aria-label="Pausar m&uacute;sica">
+    <span class="icon" aria-hidden="true">&#9208;</span>
+  </button>
   <button class="to-top" id="toTop" aria-label="Volver arriba">&uarr;</button>
   <footer class="wrap">
     <small>Hecho con &hearts; para celebrar a Aby Alvarez.</small>
@@ -396,6 +411,50 @@
       themeBtn.setAttribute('aria-pressed', String(cur==='dark'));
     });
 
+    // AUDIO CONTROL
+    const bgAudio = document.getElementById('bg-audio');
+    const audioToggle = document.getElementById('audio-toggle');
+    if(bgAudio){ bgAudio.volume = 0.4; }
+    if(bgAudio && audioToggle){
+      const iconEl = audioToggle.querySelector('.icon');
+      const PLAYING_ICON = String.fromCharCode(0x23F8);
+      const PAUSED_ICON = String.fromCharCode(0x25B6);
+      const PLAYING_LABEL = 'Pausar m\u00fasica';
+      const PAUSED_LABEL = 'Reproducir m\u00fasica';
+      const setState = (playing)=>{
+        audioToggle.classList.toggle('is-paused', !playing);
+        audioToggle.setAttribute('aria-pressed', String(playing));
+        audioToggle.setAttribute('aria-label', playing ? PLAYING_LABEL : PAUSED_LABEL);
+        if(iconEl){ iconEl.textContent = playing ? PLAYING_ICON : PAUSED_ICON; }
+      };
+      const attemptPlay = ()=>{
+        const res = bgAudio.play();
+        if(res && typeof res.then === 'function'){
+          res.then(()=> setState(true)).catch(()=> setState(false));
+        } else {
+          setState(!bgAudio.paused);
+        }
+      };
+      setState(!bgAudio.paused);
+      attemptPlay();
+      audioToggle.addEventListener('click', ()=>{
+        if(bgAudio.paused){
+          bgAudio.play().then(()=> setState(true)).catch(()=> setState(false));
+        } else {
+          bgAudio.pause();
+          setState(false);
+        }
+      });
+      const unlock = ()=>{
+        if(bgAudio.paused){
+          bgAudio.play().then(()=> setState(true)).catch(()=> setState(false));
+        }
+      };
+      document.addEventListener('pointerdown', unlock, {once:true});
+      document.addEventListener('keydown', unlock, {once:true});
+      bgAudio.addEventListener('play', ()=> setState(true));
+      bgAudio.addEventListener('pause', ()=> setState(false));
+    }
     // PARALLAX (rAF single loop)
     const parRoot = document.querySelector('.parallax');
     const layers = [...document.querySelectorAll('.layer')].filter(function(el){ return !el.classList.contains('balloons'); });
