@@ -23,6 +23,12 @@
       --shadow-tiny:0 4px 10px rgba(0,0,0,.12);
       --ease: cubic-bezier(.22,.61,.36,1);
     }
+
+    @property --card-bob-y{
+      syntax:'<length>';
+      inherits:false;
+      initial-value:0px;
+    }
     /* Theme (light/dark) */
     html { color-scheme: dark;}
     body[data-theme="light"]{ --ink:#1E293B; --paper:#F8FAFC; color:#1E293B; background:var(--paper);} 
@@ -64,20 +70,27 @@
     .glow{background:radial-gradient(60vw 40vh at 50% 20%, rgba(232,121,249,.18), transparent 55%),
                           radial-gradient(50vw 36vh at 50% 80%, rgba(56,189,248,.15), transparent 60%)}
 
-    /* Floating balloons */
-    .balloons{pointer-events:none}
-    .balloon{position:absolute; width:90px; aspect-ratio:3/4; border-radius:50% 50% 45% 45% / 55% 55% 45% 45%;
-             background:radial-gradient(80px 120px at 30% 30%, rgba(255,255,255,.6), rgba(255,255,255,0) 40%),
-                        linear-gradient(160deg, rgba(255,255,255,.35), rgba(255,255,255,.05) 30%, rgba(0,0,0,.14) 90%),
-                        linear-gradient(145deg, var(--magenta), var(--gold));
-             box-shadow: inset 0 0 20px rgba(255,255,255,.12), 0 20px 30px rgba(0,0,0,.28);
-             animation: float var(--t,8s) ease-in-out infinite}
-    .balloon:after{content:""; position:absolute; inset:auto 0 -22px 0; margin:auto; width:2px; height:26px; background:linear-gradient(transparent, rgba(255,255,255,.5));}
-    .balloon:nth-child(1){left:8%; top:60%; --t:9s}
-    .balloon:nth-child(2){left:78%; top:30%; --t:7.5s}
-    .balloon:nth-child(3){left:65%; top:70%; --t:10s}
+    main .wrap{text-align:center}
+    .story .wrap p{max-width:640px; margin-inline:auto; text-align:center}
+    .card p{max-width:520px; margin-inline:auto; text-align:center}
 
-    @keyframes float{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-14px) } }
+    /* Floating balloons */
+    .balloons{pointer-events:none; overflow:hidden}
+    .balloon{position:absolute; top:0; left:var(--left,50%); width:var(--size, clamp(58px, 9vw, 94px)); aspect-ratio:3/4; border-radius:50% 50% 45% 45% / 55% 55% 45% 45%;
+             background:radial-gradient(120% 140% at 30% 20%, rgba(255,255,255,.65), rgba(255,255,255,0) 48%),
+                        linear-gradient(160deg, rgba(255,255,255,.3), rgba(255,255,255,.05) 35%, rgba(15,23,42,.18) 100%),
+                        linear-gradient(150deg, var(--tone-a,#f1f5f9), var(--tone-b,#cbd5f5));
+             box-shadow:0 18px 32px rgba(15,23,42,.32); opacity:0; filter:saturate(108%); mix-blend-mode:screen;
+             animation:balloon-rise var(--duration,16s) linear infinite; animation-delay:var(--delay,-9s); animation-duration:var(--duration,16s);}
+    .balloon:after{content:""; position:absolute; inset:auto 0 -24px 0; margin:auto; width:2px; height:28px; background:linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,0));}
+
+    @keyframes balloon-rise{
+      0%{transform:translate3d(-50%,110vh,var(--depth,-12px)) scale(var(--scale,1)); opacity:0;}
+      10%{opacity:.7;}
+      45%{transform:translate3d(calc(-50% + var(--drift,0px)),-6vh,var(--depth,-12px)) scale(var(--scale-hi,1.1)); opacity:.82;}
+      100%{transform:translate3d(calc(-50% + var(--drift-end,0px)),-130vh,var(--depth,-12px)) scale(var(--scale,1)); opacity:0;}
+    }
+
 
     /* Confetti (subtle) */
     .confetti{position:absolute; inset:0; pointer-events:none}
@@ -111,15 +124,39 @@
     /* HIGHLIGHTS */
     .highlights .grid{display:grid; grid-template-columns:1fr; gap:16px}
     @media(min-width:720px){ .highlights .grid{grid-template-columns:repeat(3,1fr)} }
-    .card{position:relative; border-radius:var(--radius-lg); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-          border:1px solid rgba(255,255,255,.18); padding:18px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-          box-shadow:var(--shadow-soft); transform-style:preserve-3d; transform: translateY(10px) scale(.98); opacity:0; transition: transform .7s var(--ease), opacity .7s var(--ease)}
-    .card.is-visible{opacity:1; transform: translateY(0) scale(1)}
-    .card:hover{transform: rotateX(6deg) rotateY(-6deg) translateZ(6px) scale(1.01)}
-    .card .icon{width:40px; height:40px; margin-bottom:.5rem}
-    .card h3{font-size:1.05rem; letter-spacing:.04em}
-    .spec{position:absolute; inset:auto 10px 10px auto; width:120px; height:120px; background: conic-gradient(from 120deg, rgba(255,255,255,.14), transparent 60%);
-          filter: blur(16px); opacity:.5; pointer-events:none}
+    .card{position:relative; isolation:isolate; overflow:visible; border-radius:var(--radius-lg); background:linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
+          border:1px solid rgba(148,163,209,.26); padding:22px; backdrop-filter:blur(14px) saturate(140%); -webkit-backdrop-filter:blur(14px) saturate(140%);
+          box-shadow:0 18px 36px rgba(15,23,42,.32); transform-style:preserve-3d; opacity:0; cursor:pointer; text-align:center;
+          --card-offset:14px; --card-scale:.98; --card-bob-y:0px; --card-delay:0s;
+          transform:translateY(calc(var(--card-offset) + var(--card-bob-y))) scale(var(--card-scale));
+          animation:card-bob 6.8s ease-in-out infinite; animation-delay:var(--card-delay);
+          transition:transform .7s var(--ease), opacity .7s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease), background .5s var(--ease);}
+    .card:nth-of-type(2){ --card-delay:-2.1s;}
+    .card:nth-of-type(3){ --card-delay:-3.4s;}
+
+    .card::before{content:""; position:absolute; inset:-4px; border-radius:inherit; background:conic-gradient(from 60deg, rgba(56,189,248,.28), rgba(129,140,248,.26), rgba(232,121,249,.28), rgba(248,172,120,.22), rgba(56,189,248,.28));
+                  filter:blur(18px); opacity:.38; pointer-events:none; mix-blend-mode:screen; animation:border-spin 12s linear infinite; transform-origin:center}
+    .card::after{content:""; position:absolute; inset:0; border-radius:inherit; border:1px solid rgba(255,255,255,.32); background:linear-gradient(145deg, rgba(255,255,255,.18), rgba(148,163,209,.08));
+                 mix-blend-mode:screen; opacity:.72; pointer-events:none; transition:opacity .45s var(--ease), border-color .45s var(--ease)}
+    .card.is-visible{opacity:1; --card-offset:0px; --card-scale:1}
+    .card:hover{--card-offset:-6px; --card-scale:1.03; --card-bob-y:0px; animation-play-state:paused; box-shadow:0 26px 48px rgba(15,23,42,.5); border-color:rgba(148,163,209,.38)}
+    .card:hover::before{opacity:.58; filter:blur(22px)}
+    .card:hover::after{opacity:.95}
+    .card.is-pressed{--card-offset:-4px; --card-scale:1.04; --card-bob-y:0px; animation-play-state:paused; background:linear-gradient(185deg, rgba(255,255,255,.26), rgba(255,255,255,.08)); box-shadow:0 32px 60px rgba(15,23,42,.58); border-color:rgba(148,163,209,.46)}
+    .card.is-pressed::before{opacity:.78; filter:blur(16px)}
+    .card.is-pressed::after{opacity:1}
+    .card .icon{width:40px; height:40px; margin:0 auto .75rem auto; display:block}
+    .card h3{font-size:1.05rem; letter-spacing:.04em; margin-bottom:.35rem}
+    .spec{position:absolute; inset:auto 10px 10px auto; width:120px; height:120px; background:conic-gradient(from 120deg, rgba(255,255,255,.14), transparent 60%);
+          filter:blur(16px); opacity:.5; pointer-events:none}
+
+    @keyframes card-bob{
+      0%,100%{ --card-bob-y:6px; }
+      50%{ --card-bob-y:-7px; }
+    }
+
+    @keyframes border-spin{from{transform:rotate(0deg);} to{transform:rotate(360deg);}}
+
 
     /* COUNTDOWN */
     .countdown{display:grid; place-items:center; gap:8px}
@@ -152,7 +189,8 @@
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
       *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration: .001ms !important; scroll-behavior:auto !important}
-      .card:hover{transform:none}
+      .card:hover{--card-offset:0; --card-scale:1; --card-bob-y:0}
+      .card{animation:none !important}
     }
   </style>
 </head>
@@ -176,11 +214,7 @@
       <div class="parallax" aria-hidden="true">
         <div class="layer stars" style="transform: translateZ(-60px);"></div>
         <div class="layer glow" style="transform: translateZ(-30px);"></div>
-        <div class="layer balloons">
-          <div class="balloon" style="transform: translateZ(-10px)"></div>
-          <div class="balloon" style="transform: translateZ(-15px)"></div>
-          <div class="balloon" style="transform: translateZ(-8px)"></div>
-        </div>
+        <div class="layer balloons" aria-hidden="true"></div>
         <div class="confetti" id="confetti" aria-hidden="true"></div>
       </div>
       <div class="hero-content wrap">
@@ -320,6 +354,48 @@
       p.style.height = (8+Math.random()*8)+'px';
     }
 
+    // BALLOONS (gentle stream)
+    const balloonLayer = document.querySelector('.balloons');
+    if(balloonLayer){
+      const palette = [
+        ['#FDE68A','#FBCFE8'],
+        ['#BAE6FD','#A5F3FC'],
+        ['#E0E7FF','#C7D2FE'],
+        ['#FBCFE8','#FCE7F3'],
+        ['#F8FAFC','#E2E8F0']
+      ];
+      const total = window.matchMedia('(min-width: 900px)').matches ? 16 : 11;
+      const applyBalloonStyle = (el, initial=false)=>{
+        const shades = palette[Math.floor(Math.random()*palette.length)];
+        const duration = 14 + Math.random()*8;
+        const left = 6 + Math.random()*88;
+        const depth = -30 + Math.random()*24;
+        const scale = 0.85 + Math.random()*0.25;
+        const drift = (Math.random()*36 - 18).toFixed(1) + 'px';
+        const driftEnd = (Math.random()*32 - 16).toFixed(1) + 'px';
+        el.style.setProperty('--tone-a', shades[0]);
+        el.style.setProperty('--tone-b', shades[1]);
+        el.style.setProperty('--duration', duration.toFixed(2) + 's');
+        el.style.setProperty('--delay', (initial ? -Math.random()*duration : 0).toFixed(2) + 's');
+        el.style.setProperty('--left', left.toFixed(2) + '%');
+        el.style.setProperty('--depth', depth.toFixed(1) + 'px');
+        el.style.setProperty('--scale', scale.toFixed(2));
+        el.style.setProperty('--scale-hi', (scale + 0.12).toFixed(2));
+        el.style.setProperty('--drift', drift);
+        el.style.setProperty('--drift-end', driftEnd);
+        if(!initial){
+          el.style.animationDuration = duration.toFixed(2) + 's';
+        }
+      };
+      for(let i=0;i<total;i++){
+        const balloon = document.createElement('span');
+        balloon.className = 'balloon';
+        applyBalloonStyle(balloon, true);
+        balloon.addEventListener('animationiteration', ()=>applyBalloonStyle(balloon));
+        balloonLayer.appendChild(balloon);
+      }
+    }
+
     // INTERSECTION OBSERVER (stagger reveal)
     const io = new IntersectionObserver((entries)=>{
       entries.forEach((e)=>{
@@ -333,6 +409,26 @@
     }, {threshold:.2});
 
     document.querySelectorAll('.story .wrap, .card, .ph').forEach(el=> io.observe(el.closest('.story .wrap') || el));
+
+    // CARD INTERACTION (press glow)
+    document.querySelectorAll('.card').forEach((card)=>{
+      let pressTimer;
+      const release = ()=>{
+        if(pressTimer){ clearTimeout(pressTimer); }
+        pressTimer = setTimeout(()=> card.classList.remove('is-pressed'), 380);
+      };
+      card.addEventListener('pointerdown', ()=>{
+        card.classList.add('is-pressed');
+        if(pressTimer){ clearTimeout(pressTimer); }
+      });
+      card.addEventListener('pointerup', release);
+      card.addEventListener('pointercancel', release);
+      card.addEventListener('mouseleave', ()=> card.classList.remove('is-pressed'));
+      card.addEventListener('click', ()=>{
+        if(pressTimer){ clearTimeout(pressTimer); }
+        pressTimer = setTimeout(()=> card.classList.remove('is-pressed'), 480);
+      });
+    });
 
     // ToTop button
     const toTop = document.getElementById('toTop');
