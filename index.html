@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>¡Feliz Cumpleaños, Maria Antonia! — 23</title>
-  <meta name="description" content="Landing móvil con parallax, motion graphics y animaciones sutiles para celebrar los 23 de Maria Antonia." />
+  <title>¡Feliz Cumpleaños, Aby Alvarez! — 23</title>
+  <meta name="description" content="Landing móvil con parallax, motion graphics y animaciones sutiles para celebrar los 23 de Aby Alvarez." />
   <meta name="theme-color" content="#0F172A" />
   <style>
     :root{
@@ -29,6 +29,11 @@
       inherits:false;
       initial-value:0px;
     }
+    @property --glint-angle{
+      syntax:'<angle>';
+      inherits:false;
+      initial-value:0deg;
+    }
     /* Theme (light/dark) */
     html { color-scheme: dark;}
     body[data-theme="light"]{ --ink:#1E293B; --paper:#F8FAFC; color:#1E293B; background:var(--paper);} 
@@ -36,7 +41,7 @@
 
     /* Reset */
     *,*::before,*::after{box-sizing:border-box}
-    body{margin:0;font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;overflow-x:hidden}
+    body{margin:0;font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;position:relative;overflow-x:hidden}
     h1,h2,h3,p{margin:0 0 .75rem 0}
     img{max-width:100%;display:block;height:auto}
     a{color:inherit}
@@ -75,12 +80,14 @@
     .card p{max-width:520px; margin-inline:auto; text-align:center}
 
     /* Floating balloons */
-    .balloons{pointer-events:none; overflow:hidden}
+    .balloons{pointer-events:none; overflow:hidden; opacity:.85}
+    .layer.balloons{position:fixed; inset:0; z-index:-1; mix-blend-mode:screen; pointer-events:none;}
+    body[data-theme="light"] .layer.balloons{mix-blend-mode:multiply; opacity:.55;}
     .balloon{position:absolute; top:0; left:var(--left,50%); width:var(--size, clamp(58px, 9vw, 94px)); aspect-ratio:3/4; border-radius:50% 50% 45% 45% / 55% 55% 45% 45%;
              background:radial-gradient(120% 140% at 30% 20%, rgba(255,255,255,.65), rgba(255,255,255,0) 48%),
                         linear-gradient(160deg, rgba(255,255,255,.3), rgba(255,255,255,.05) 35%, rgba(15,23,42,.18) 100%),
                         linear-gradient(150deg, var(--tone-a,#f1f5f9), var(--tone-b,#cbd5f5));
-             box-shadow:0 18px 32px rgba(15,23,42,.32); opacity:0; filter:saturate(108%); mix-blend-mode:screen;
+             box-shadow:0 18px 32px rgba(15,23,42,.32); opacity:0; filter:saturate(108%); mix-blend-mode:screen; transition:left 6s ease-in-out, opacity 1.2s ease-in-out;
              animation:balloon-rise var(--duration,16s) linear infinite; animation-delay:var(--delay,-9s); animation-duration:var(--duration,16s);}
     .balloon:after{content:""; position:absolute; inset:auto 0 -24px 0; margin:auto; width:2px; height:28px; background:linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,0));}
 
@@ -93,7 +100,9 @@
 
 
     /* Confetti (subtle) */
-    .confetti{position:absolute; inset:0; pointer-events:none}
+    .confetti{position:fixed; inset:-12% 0 0 0; pointer-events:none; z-index:6; overflow:hidden; mix-blend-mode:screen;}
+    body[data-theme="light"] .confetti{mix-blend-mode:multiply; opacity:.9;}
+    body[data-theme="light"] .confetti .piece{opacity:.85; filter:saturate(1.3); mix-blend-mode:normal;}
     .piece{position:absolute; width:6px; height:10px; border-radius:2px; opacity:.7; transform:translateY(-20vh) rotate(0deg); animation: fall linear infinite}
     @keyframes fall{ 100%{ transform: translateY(120vh) rotate(360deg) } }
 
@@ -109,21 +118,28 @@
     @keyframes fadeInUp{ from{ opacity:0; transform:translateY(10px) } to{ opacity:1; transform:translateY(0) } }
 
     .scroll-hint{position:absolute; left:50%; bottom:22px; transform:translateX(-50%); display:grid; place-items:center; gap:6px; color:rgba(255,255,255,.9)}
+    body[data-theme="light"] .scroll-hint{color:rgba(71,85,105,.85);}
     .chev{width:20px; height:28px; border:2px solid currentColor; border-radius:12px; position:relative}
     .chev:after{content:""; position:absolute; left:50%; top:6px; width:4px; height:6px; transform:translateX(-50%); border-radius:3px; background:currentColor; animation: scrollDot 1.6s ease-in-out infinite}
     @keyframes scrollDot{ 0%,100%{ transform: translate(-50%,0) } 50%{ transform: translate(-50%,10px) } }
 
     /* MESSAGE SECTION */
-    .story{background:linear-gradient(180deg, transparent, rgba(255,255,255,.03)), radial-gradient(1000px 300px at 50% -120px, rgba(255,255,255,.06), transparent), var(--paper)}
-    .story .wrap{display:grid; gap:1.25rem}
-    .story p{font-size:1.05rem; opacity:.0; transform: translateY(8px); transition: transform .7s var(--ease), opacity .7s var(--ease)}
+    .story{position:relative; isolation:isolate; overflow:hidden;
+           background:radial-gradient(70% 80% at 50% 8%, rgba(232,121,249,.16), transparent 68%),
+                      radial-gradient(120% 120% at 50% 110%, rgba(56,189,248,.12), transparent 78%),
+                      linear-gradient(180deg, transparent, rgba(255,255,255,.03)),
+                      radial-gradient(1000px 300px at 50% -120px, rgba(255,255,255,.06), transparent),
+                      var(--paper);}
+    .story-flowers{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:0; opacity:.82;}
+    .story .wrap{display:grid; gap:1.25rem; position:relative; z-index:2;}
+    .story p{font-size:1.05rem; opacity:0; transform: translateY(8px); transition: transform .7s var(--ease), opacity .7s var(--ease)}
     .story p.is-visible{opacity:1; transform: translateY(0)}
 
-    .decor{position:absolute; inset:auto auto -120px -40px; width:240px; height:240px; background: radial-gradient(closest-side, rgba(245,158,11,.35), transparent 70%); filter:blur(20px); mix-blend-mode:screen; pointer-events:none}
+    .story .decor{position:absolute; inset:auto auto -120px -40px; width:240px; height:240px; background: radial-gradient(closest-side, rgba(245,158,11,.35), transparent 70%); filter:blur(20px); mix-blend-mode:screen; pointer-events:none; z-index:1;}
 
     /* HIGHLIGHTS */
-    .highlights .grid{display:grid; grid-template-columns:1fr; gap:16px}
-    @media(min-width:720px){ .highlights .grid{grid-template-columns:repeat(3,1fr)} }
+    .highlights .grid{display:grid; grid-template-columns:1fr; gap:24px; padding:0 4px;}
+    @media(min-width:720px){ .highlights .grid{grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px;} }
     .card{position:relative; isolation:isolate; overflow:visible; border-radius:var(--radius-lg); background:linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
           border:1px solid rgba(148,163,209,.26); padding:22px; backdrop-filter:blur(14px) saturate(140%); -webkit-backdrop-filter:blur(14px) saturate(140%);
           box-shadow:0 18px 36px rgba(15,23,42,.32); transform-style:preserve-3d; opacity:0; cursor:pointer; text-align:center;
@@ -134,8 +150,12 @@
     .card:nth-of-type(2){ --card-delay:-2.1s;}
     .card:nth-of-type(3){ --card-delay:-3.4s;}
 
-    .card::before{content:""; position:absolute; inset:-4px; border-radius:inherit; background:conic-gradient(from 60deg, rgba(56,189,248,.28), rgba(129,140,248,.26), rgba(232,121,249,.28), rgba(248,172,120,.22), rgba(56,189,248,.28));
-                  filter:blur(18px); opacity:.38; pointer-events:none; mix-blend-mode:screen; animation:border-spin 12s linear infinite; transform-origin:center}
+    .card::before{content:""; position:absolute; inset:-4px; border-radius:inherit;
+                  background:conic-gradient(from var(--glint-angle), rgba(255,255,255,0) 0deg, rgba(255,255,255,.65) 10deg, rgba(248,172,120,.45) 16deg, rgba(232,121,249,.45) 22deg, rgba(56,189,248,.38) 28deg, rgba(255,255,255,0) 40deg),
+                             conic-gradient(from 60deg, rgba(56,189,248,.22), rgba(129,140,248,.2), rgba(232,121,249,.24), rgba(248,172,120,.18), rgba(56,189,248,.22));
+                  filter:blur(18px); opacity:.46; pointer-events:none; mix-blend-mode:screen; animation:card-glint 18s linear infinite; transform-origin:center;
+                  mask: radial-gradient(closest-side, transparent calc(100% - 18px), rgba(0,0,0,.85) calc(100% - 7px));
+                  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 18px), rgba(0,0,0,.85) calc(100% - 7px));}
     .card::after{content:""; position:absolute; inset:0; border-radius:inherit; border:1px solid rgba(255,255,255,.32); background:linear-gradient(145deg, rgba(255,255,255,.18), rgba(148,163,209,.08));
                  mix-blend-mode:screen; opacity:.72; pointer-events:none; transition:opacity .45s var(--ease), border-color .45s var(--ease)}
     .card.is-visible{opacity:1; --card-offset:0px; --card-scale:1}
@@ -155,7 +175,7 @@
       50%{ --card-bob-y:-7px; }
     }
 
-    @keyframes border-spin{from{transform:rotate(0deg);} to{transform:rotate(360deg);}}
+    @keyframes card-glint{from{ --glint-angle:0deg; } to{ --glint-angle:360deg; }}
 
 
     /* COUNTDOWN */
@@ -178,7 +198,9 @@
     .closing .big{font-size: clamp(26px, 6vw, 46px); font-weight:900; letter-spacing:.03em; line-height:1.15; background: linear-gradient(100deg, var(--gold), var(--magenta), var(--sky));
                   background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; position:relative}
     .sweep{position:absolute; inset:0; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.9), rgba(255,255,255,0)); mix-blend-mode:screen; transform: translateX(-120%); filter: blur(6px)}
-    .play{margin-top:14px; border:1px solid rgba(255,255,255,.3); background:var(--glass); padding:.7rem 1rem; border-radius:999px; cursor:pointer; box-shadow:var(--shadow-tiny)}
+    .play{margin-top:14px; border:1px solid rgba(255,255,255,.3); background:var(--glass); padding:.7rem 1rem; border-radius:999px; cursor:pointer; box-shadow:var(--shadow-tiny); color:inherit;}
+    body[data-theme="light"] .play{background:rgba(15,23,42,.08); border-color:rgba(15,23,42,.16); color:#0f172a;}
+    body[data-theme="dark"] .play{color:var(--ink);}
     .play:focus-visible{outline:2px solid var(--sky); outline-offset:3px}
 
     /* FOOTER */
@@ -200,13 +222,14 @@
     <div class="wrap">
       <div class="brand" aria-label="Marca">
         <span class="dot" aria-hidden="true"></span>
-        <span>Celebrando a Maria Antonia</span>
+        <span>Celebrando a Aby Alvarez</span>
       </div>
       <button id="theme" class="toggle" aria-pressed="false" aria-label="Cambiar tema claro/oscuro">
         <span aria-hidden="true">🌓</span><span class="muted">Tema</span>
       </button>
     </div>
   </header>
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
 
   <main id="main" tabindex="-1">
     <!-- HERO -->
@@ -215,11 +238,10 @@
         <div class="layer stars" style="transform: translateZ(-60px);"></div>
         <div class="layer glow" style="transform: translateZ(-30px);"></div>
         <div class="layer balloons" aria-hidden="true"></div>
-        <div class="confetti" id="confetti" aria-hidden="true"></div>
       </div>
       <div class="hero-content wrap">
-        <h1 id="t-hero" class="title" aria-live="polite">¡Feliz Cumpleaños, Maria Antonia!</h1>
-        <p class="subtitle">Hoy celebramos tus 23 años</p>
+        <h1 id="t-hero" class="title" aria-live="polite">¡Feliz Cumpleaños, Aby Alvarez!</h1>
+        <p class="subtitle">Un abrazo con mucho cariño</p>
       </div>
       <div class="scroll-hint" aria-hidden="true">
         <div class="chev"></div>
@@ -229,6 +251,7 @@
 
     <!-- STORY / MESSAGE -->
     <section class="story section" aria-label="Mensaje de cariño">
+      <canvas id="story-flowers" class="story-flowers" aria-hidden="true"></canvas>
       <span class="decor" aria-hidden="true"></span>
       <div class="wrap">
         <p class="reveal">Que este nuevo año esté lleno de alegría genuina, metas cumplidas y momentos que te hagan sonreír con el alma.</p>
@@ -296,7 +319,7 @@
     <!-- CLOSING -->
     <section class="closing section" aria-label="Buenos deseos y firma">
       <div class="wrap">
-        <h2 class="big" id="final-text">Brilla siempre, Maria Antonia — feliz 23<div class="sweep" id="sweep" aria-hidden="true"></div></h2>
+        <h2 class="big" id="final-text">Muchas Felicidades! Aby — feliz Cumpleaños<div class="sweep" id="sweep" aria-hidden="true"></div></h2>
         <p class="muted">Con cariño, tu familia y amigos.</p>
         <button id="surprise" class="play" aria-controls="fx" aria-expanded="false">Reproducir sorpresa ✨</button>
       </div>
@@ -306,7 +329,7 @@
 
   <button class="to-top" id="toTop" aria-label="Volver arriba">↑</button>
   <footer class="wrap">
-    <small>Hecho con ♥ para celebrar a Maria Antonia.</small>
+    <small>Hecho con ♥ para celebrar a Aby Alvarez.</small>
   </footer>
 
   <script>
@@ -325,7 +348,7 @@
 
     // PARALLAX (rAF single loop)
     const parRoot = document.querySelector('.parallax');
-    const layers = [...document.querySelectorAll('.layer')];
+    const layers = [...document.querySelectorAll('.layer')].filter(function(el){ return !el.classList.contains('balloons'); });
     let y=0; let ticking=false;
     const onScroll = ()=>{ y = window.scrollY || window.pageYOffset; if(!ticking){ requestAnimationFrame(update); ticking=true; }};
     function update(){
@@ -340,7 +363,7 @@
 
     // CONFETTI (DOM subtle)
     const conf = document.getElementById('confetti');
-    const colors = ['#F59E0B','#E879F9','#38BDF8','#ffffff'];
+    const colors = ['#F59E0B','#E879F9','#38BDF8','#22D3EE','#F97316','#A855F7','#4ADE80','#ffffff'];
     for(let i=0;i<24;i++){
       const p=document.createElement('i'); p.className='piece'; conf.appendChild(p);
       p.style.left = (Math.random()*100)+'%';
@@ -364,37 +387,232 @@
         ['#FBCFE8','#FCE7F3'],
         ['#F8FAFC','#E2E8F0']
       ];
-      const total = window.matchMedia('(min-width: 900px)').matches ? 16 : 11;
+      const mobileQuery = window.matchMedia('(max-width: 720px)');
+      const total = mobileQuery.matches ? 10 : window.matchMedia('(min-width: 1200px)').matches ? 18 : 14;
+      let mobileLanes = mobileQuery.matches ? [6, 18, 32, 46, 60, 74, 88] : null;
+      let laneIndex = 0;
+
+      const clamp = (value, min, max)=> Math.min(max, Math.max(min, value));
+
+      const getLaneLeft = (el)=>{
+        if(mobileLanes){
+          if(!el.dataset.lane){
+            el.dataset.lane = String(mobileLanes[laneIndex % mobileLanes.length]);
+            laneIndex++;
+          }
+          return parseFloat(el.dataset.lane);
+        }
+        if(!el.dataset.left){
+          el.dataset.left = (6 + Math.random()*88).toFixed(2);
+        }
+        return parseFloat(el.dataset.left);
+      };
+
+      const jitter = (previous, min, max, step)=>{
+        if(!Number.isFinite(previous)){
+          return clamp(min + Math.random()*(max - min), min, max);
+        }
+        return clamp(previous + (Math.random()*2 - 1) * step, min, max);
+      };
+
       const applyBalloonStyle = (el, initial=false)=>{
         const shades = palette[Math.floor(Math.random()*palette.length)];
-        const duration = 14 + Math.random()*8;
-        const left = 6 + Math.random()*88;
-        const depth = -30 + Math.random()*24;
-        const scale = 0.85 + Math.random()*0.25;
-        const drift = (Math.random()*36 - 18).toFixed(1) + 'px';
-        const driftEnd = (Math.random()*32 - 16).toFixed(1) + 'px';
+        const baseDuration = mobileQuery.matches ? 24 : 17;
+        const duration = jitter(parseFloat(el.dataset.duration), baseDuration - 4, baseDuration + 4, 2.2);
+        el.dataset.duration = duration.toFixed(2);
+
+        let leftBase = getLaneLeft(el);
+        if(mobileLanes){
+          leftBase = clamp(leftBase + (Math.random()*2.4 - 1.2), 4, 96);
+        }else{
+          leftBase = clamp(jitter(leftBase, 8, 92, 5.5), 2, 98);
+          el.dataset.left = leftBase.toFixed(2);
+        }
+
+        const depth = jitter(parseFloat(el.dataset.depth), -30, -8, 4.5);
+        el.dataset.depth = depth.toFixed(1);
+
+        const baseScale = mobileQuery.matches ? 0.84 : 0.94;
+        const scale = jitter(parseFloat(el.dataset.scale), baseScale - 0.08, baseScale + 0.12, 0.05);
+        el.dataset.scale = scale.toFixed(2);
+
+        const driftBand = mobileQuery.matches ? 20 : 28;
+        const drift = jitter(parseFloat(el.dataset.drift), -driftBand/2, driftBand/2, driftBand*0.25);
+        el.dataset.drift = drift.toFixed(1);
+        const driftEnd = jitter(parseFloat(el.dataset.driftEnd), -driftBand/2, driftBand/2, driftBand*0.25);
+        el.dataset.driftEnd = driftEnd.toFixed(1);
+
         el.style.setProperty('--tone-a', shades[0]);
         el.style.setProperty('--tone-b', shades[1]);
         el.style.setProperty('--duration', duration.toFixed(2) + 's');
         el.style.setProperty('--delay', (initial ? -Math.random()*duration : 0).toFixed(2) + 's');
-        el.style.setProperty('--left', left.toFixed(2) + '%');
+        el.style.setProperty('--left', leftBase.toFixed(2) + '%');
         el.style.setProperty('--depth', depth.toFixed(1) + 'px');
         el.style.setProperty('--scale', scale.toFixed(2));
-        el.style.setProperty('--scale-hi', (scale + 0.12).toFixed(2));
-        el.style.setProperty('--drift', drift);
-        el.style.setProperty('--drift-end', driftEnd);
+        el.style.setProperty('--scale-hi', (scale + 0.08).toFixed(2));
+        el.style.setProperty('--drift', drift.toFixed(1) + 'px');
+        el.style.setProperty('--drift-end', driftEnd.toFixed(1) + 'px');
         if(!initial){
           el.style.animationDuration = duration.toFixed(2) + 's';
         }
       };
+
+      const refreshLanes = ()=>{
+        mobileLanes = mobileQuery.matches ? [6, 18, 32, 46, 60, 74, 88] : null;
+        laneIndex = 0;
+        balloonLayer.querySelectorAll('.balloon').forEach((el)=>{
+          delete el.dataset.lane;
+          if(mobileLanes){
+            delete el.dataset.left;
+          }else{
+            el.dataset.left = (6 + Math.random()*88).toFixed(2);
+          }
+          applyBalloonStyle(el, true);
+        });
+      };
+
+      if(mobileQuery.addEventListener){
+        mobileQuery.addEventListener('change', refreshLanes);
+      }else if(mobileQuery.addListener){
+        mobileQuery.addListener(refreshLanes);
+      }
+
       for(let i=0;i<total;i++){
         const balloon = document.createElement('span');
         balloon.className = 'balloon';
         applyBalloonStyle(balloon, true);
-        balloon.addEventListener('animationiteration', ()=>applyBalloonStyle(balloon));
+        balloon.addEventListener('animationiteration', ()=> requestAnimationFrame(()=> applyBalloonStyle(balloon)) );
         balloonLayer.appendChild(balloon);
       }
     }
+
+    // STORY FLOWERS (canvas waves)
+    const storySection = document.querySelector('.story');
+    const flowerCanvas = document.getElementById('story-flowers');
+    if(storySection && flowerCanvas){
+      const fCtx = flowerCanvas.getContext('2d');
+      const flowerPalette = [
+        {outer:'rgba(232,121,249,0.55)', tip:'rgba(255,255,255,0.85)', center:'rgba(245,158,11,0.6)'},
+        {outer:'rgba(148,163,209,0.5)', tip:'rgba(224,231,255,0.82)', center:'rgba(56,189,248,0.55)'},
+        {outer:'rgba(56,189,248,0.55)', tip:'rgba(190,242,255,0.82)', center:'rgba(248,172,120,0.58)'}
+      ];
+      let flowers = [];
+      let rafId = null;
+      let playing = false;
+
+      const setupFlowers = ()=>{
+        const ratio = window.devicePixelRatio || 1;
+        const width = storySection.clientWidth || 1;
+        const height = storySection.clientHeight || 1;
+        flowerCanvas.width = Math.max(1, Math.floor(width * ratio));
+        flowerCanvas.height = Math.max(1, Math.floor(height * ratio));
+        flowerCanvas.style.width = width + 'px';
+        flowerCanvas.style.height = height + 'px';
+        const count = Math.max(10, Math.round(width / 90));
+        flowers = Array.from({length: count}, ()=>{
+          const paletteEntry = flowerPalette[Math.floor(Math.random()*flowerPalette.length)];
+          const baseX = width * (0.12 + Math.random()*0.76);
+          const baseY = height * (0.2 + Math.random()*0.65);
+          return {
+            x: baseX,
+            y: baseY,
+            size: 24 + Math.random()*28,
+            petals: 5 + Math.floor(Math.random()*2),
+            rotation: Math.random()*Math.PI*2,
+            sway: 8 + Math.random()*14,
+            wave: 0.4 + Math.random()*0.35,
+            drift: 0.25 + Math.random()*0.3,
+            offset: Math.random()*Math.PI*2,
+            colors: paletteEntry
+          };
+        });
+      };
+
+      const drawFlower = (flower, t)=>{
+        const ratio = window.devicePixelRatio || 1;
+        const swingX = Math.sin(t * flower.wave + flower.offset) * flower.sway;
+        const swingY = Math.cos(t * (flower.wave * 0.8) + flower.offset) * flower.sway * 0.35;
+        const px = (flower.x + swingX) * ratio;
+        const py = (flower.y + swingY) * ratio;
+        const size = flower.size * ratio;
+        const petals = flower.petals;
+
+        fCtx.save();
+        fCtx.translate(px, py);
+        fCtx.rotate(flower.rotation + Math.sin(t * flower.drift + flower.offset) * 0.35);
+        fCtx.shadowColor = flower.colors.tip;
+        fCtx.shadowBlur = size * 0.18;
+
+        for(let i=0;i<petals;i++){
+          fCtx.save();
+          fCtx.rotate((Math.PI * 2 / petals) * i);
+          const grad = fCtx.createLinearGradient(0,0,0,-size);
+          grad.addColorStop(0, 'rgba(255,255,255,0)');
+          grad.addColorStop(0.55, flower.colors.outer);
+          grad.addColorStop(1, flower.colors.tip);
+          fCtx.fillStyle = grad;
+          fCtx.beginPath();
+          fCtx.moveTo(0,0);
+          fCtx.quadraticCurveTo(size * 0.45, -size * 0.55, 0, -size);
+          fCtx.quadraticCurveTo(-size * 0.45, -size * 0.55, 0,0);
+          fCtx.closePath();
+          fCtx.fill();
+          fCtx.restore();
+        }
+
+        fCtx.shadowBlur = 0;
+        fCtx.fillStyle = flower.colors.center;
+        fCtx.beginPath();
+        fCtx.arc(0,0,size * 0.22, 0, Math.PI * 2);
+        fCtx.fill();
+        fCtx.restore();
+      };
+
+      const renderFlowers = (time)=>{
+        if(!playing){ return; }
+        fCtx.clearRect(0,0,flowerCanvas.width, flowerCanvas.height);
+        fCtx.globalCompositeOperation = 'lighter';
+        const t = time * 0.001;
+        flowers.forEach((flower)=> drawFlower(flower, t));
+        fCtx.globalCompositeOperation = 'source-over';
+        rafId = requestAnimationFrame(renderFlowers);
+      };
+
+      const startFlowers = ()=>{
+        if(rafId){ cancelAnimationFrame(rafId); }
+        playing = true;
+        rafId = requestAnimationFrame(renderFlowers);
+      };
+
+      const stopFlowers = ()=>{
+        playing = false;
+        if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+      };
+
+      const storyObserver = new IntersectionObserver((entries)=>{
+        entries.forEach((entry)=>{
+          if(entry.isIntersecting){
+            setupFlowers();
+            startFlowers();
+          }else{
+            stopFlowers();
+          }
+        });
+      }, {threshold:0.25});
+
+      storyObserver.observe(storySection);
+
+      const resizeObserver = new ResizeObserver(()=>{
+        setupFlowers();
+        if(playing){
+          if(rafId){ cancelAnimationFrame(rafId); }
+          rafId = requestAnimationFrame(renderFlowers);
+        }
+      });
+      resizeObserver.observe(storySection);
+      setupFlowers();
+    }
+
 
     // INTERSECTION OBSERVER (stagger reveal)
     const io = new IntersectionObserver((entries)=>{
@@ -408,7 +626,27 @@
       })
     }, {threshold:.2});
 
-    document.querySelectorAll('.story .wrap, .card, .ph').forEach(el=> io.observe(el.closest('.story .wrap') || el));
+
+    const highlightsGrid = document.querySelector('.highlights .grid');
+    if(highlightsGrid){
+      const highlightCards = [...highlightsGrid.querySelectorAll('.card')];
+      highlightCards.forEach((card, idx)=>{
+        card.style.transitionDelay = `${idx * 120}ms`; 
+      });
+      const highlightObserver = new IntersectionObserver((entries)=>{
+        entries.forEach((entry)=>{
+          if(entry.isIntersecting){
+            highlightCards.forEach((card, idx)=>{
+              setTimeout(()=> card.classList.add('is-visible'), idx * 140);
+            });
+            highlightObserver.unobserve(entry.target);
+          }
+        });
+      }, {threshold:0.25});
+      highlightObserver.observe(highlightsGrid);
+    }
+
+    document.querySelectorAll('.story .wrap, .ph').forEach(el=> io.observe(el.closest('.story .wrap') || el));
 
     // CARD INTERACTION (press glow)
     document.querySelectorAll('.card').forEach((card)=>{
