@@ -202,7 +202,7 @@
     .gallery-note{max-width:520px; margin:0 auto; color:rgba(226,232,240,.78);}
     .carousel-wrap{position:relative; width:min(640px, 88vw); margin-inline:auto; perspective:1200px;}
     .carousel-wrap::after{content:""; position:absolute; inset:auto 10% -36px 10%; height:48px; border-radius:50%; background:radial-gradient(circle, rgba(232,121,249,.48), rgba(56,189,248,.18) 48%, transparent 70%); filter:blur(14px); opacity:.65; pointer-events:none;}
-    .carousel-stage{position:relative; padding-top:60%;}
+    .carousel-stage{position:relative; padding-top:60%; overflow:hidden;}
     .carousel{position:absolute; inset:0; transform-style:preserve-3d; animation:carousel-spin 22s linear infinite; width:100%; height:100%;}
     .carousel.is-paused{animation-play-state:paused;}
     .carousel:hover{animation-play-state:paused;}
@@ -882,4 +882,4 @@
   })();
   </script>
 </body>
-</html>
+</html> 
