@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Dancing+Script:wght@700&display=swap"
     rel="stylesheet">
 
   <style>
@@ -26,6 +26,8 @@
       --glass-border: rgba(255, 255, 255, 0.6);
       --glass-shadow: 0 8px 32px rgba(180, 160, 170, 0.15);
       --radius-lg: 24px;
+      --neon-pink: #ff6ace;
+      --neon-blue: #6ae5ff;
     }
 
     * {
@@ -55,7 +57,6 @@
       inset: 0;
       z-index: -1;
       pointer-events: none;
-      /* Let interactivity pass through if needed, but wait, Vanta uses mouse coords directly from window, so pointer-events none is okay, or we can keep it auto but put it behind. Actually, Vanta listens to body/window usually. */
     }
 
     .wrap {
@@ -85,8 +86,8 @@
     }
 
     .brand {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
       letter-spacing: 0.05em;
       color: var(--primary);
       font-weight: 600;
@@ -104,26 +105,49 @@
     }
 
     .hero-content {
-      padding: 40px;
-      max-width: 800px;
+      padding: 60px 40px;
+      max-width: 850px;
     }
 
+    /* NEON TITLE EFFECT */
     .hero h1 {
       font-size: clamp(3rem, 8vw, 5.5rem);
       line-height: 1.1;
-      margin-bottom: 20px;
-      color: var(--text-dark);
-      background: linear-gradient(120deg, #b8869c, #d4a3b3, #a3c4d4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 4px 12px rgba(212, 163, 179, 0.3));
+      margin-bottom: 30px;
+      position: relative;
+      color: #fff;
+      text-shadow: 
+        0 0 7px #fff,
+        0 0 10px #fff,
+        0 0 21px #fff,
+        0 0 42px var(--primary),
+        0 0 82px var(--primary),
+        0 0 92px var(--primary);
+      filter: drop-shadow(0 0 10px rgba(212,163,179,0.5));
+    }
+
+    .letter {
+      display: inline-block;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
+    }
+
+    .letter:hover {
+      color: var(--neon-blue);
+      text-shadow: 
+        0 0 7px #fff,
+        0 0 10px #fff,
+        0 0 21px var(--neon-blue),
+        0 0 42px var(--neon-blue);
+      transform: translateY(-15px) scale(1.1) rotate(5deg);
     }
 
     .hero p {
       font-size: clamp(1.1rem, 3vw, 1.4rem);
-      color: var(--text-muted);
-      font-weight: 300;
+      color: var(--text-dark);
+      font-weight: 400;
       letter-spacing: 0.02em;
+      margin-top: 20px;
     }
 
     .scroll-down {
@@ -151,15 +175,8 @@
     }
 
     @keyframes bounce {
-
-      0%,
-      100% {
-        transform: translate(-50%, 0);
-      }
-
-      50% {
-        transform: translate(-50%, 10px);
-      }
+      0%, 100% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, 10px); }
     }
 
     /* SECTIONS */
@@ -170,7 +187,7 @@
     }
 
     .section-title {
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
       text-align: center;
       margin-bottom: 60px;
       color: #b8869c;
@@ -178,17 +195,19 @@
 
     /* STORY */
     .story-card {
-      padding: 60px 40px;
-      max-width: 700px;
+      padding: 70px 50px;
+      max-width: 750px;
       margin: 0 auto;
       text-align: center;
-      font-size: 1.2rem;
-      line-height: 1.8;
+      font-size: 1.25rem;
+      line-height: 1.9;
       color: var(--text-dark);
+      border: 1px solid rgba(212,163,179,0.3);
     }
 
     .story-card p {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      font-style: italic;
     }
 
     /* HIGHLIGHTS */
@@ -201,22 +220,24 @@
     .card {
       padding: 40px 30px;
       text-align: center;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s ease;
     }
 
     .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 40px rgba(180, 160, 170, 0.25);
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(180, 160, 170, 0.3);
+      background: rgba(255,255,255,0.6);
     }
 
     .card-icon {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       margin-bottom: 20px;
       color: var(--primary);
+      filter: drop-shadow(0 0 8px rgba(212,163,179,0.4));
     }
 
     .card h3 {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       margin-bottom: 15px;
       color: var(--text-dark);
     }
@@ -224,7 +245,7 @@
     .card p {
       color: var(--text-muted);
       font-size: 1rem;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     /* GALLERY (GSAP PINNED) */
@@ -234,8 +255,8 @@
     }
 
     .gallery-container {
-      height: 350vh;
-      /* space for scrolling */
+      height: 450vh;
+      /* Extended space for the "dance" Intro */
       position: relative;
     }
 
@@ -257,8 +278,8 @@
 
     .photos {
       position: relative;
-      width: 300px;
-      height: 400px;
+      width: 320px;
+      height: 420px;
       perspective: 1000px;
     }
 
@@ -269,9 +290,9 @@
       width: 100%;
       height: 100%;
       background: #fff;
-      padding: 15px 15px 60px 15px;
+      padding: 15px 15px 70px 15px;
       border-radius: 4px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
       transform-origin: center center;
       will-change: transform;
       border: 1px solid rgba(0, 0, 0, 0.05);
@@ -285,49 +306,69 @@
       border-radius: 2px;
     }
 
+    .photo-card .caption {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.4rem;
+      color: var(--text-muted);
+    }
+
     .photo-card .tape {
       position: absolute;
       top: -10px;
       left: 50%;
       transform: translateX(-50%) rotate(-2deg);
-      width: 80px;
-      height: 25px;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(4px);
+      width: 90px;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
 
     /* COUNTDOWN */
     .countdown-card {
-      padding: 50px;
+      padding: 60px;
       text-align: center;
-      max-width: 800px;
+      max-width: 850px;
       margin: 0 auto;
+      border: 1px solid rgba(255,255,255,0.8);
     }
 
     .countdown-grid {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 25px;
       flex-wrap: wrap;
       margin-top: 40px;
     }
 
     .time-unit {
-      background: rgba(255, 255, 255, 0.6);
-      width: 120px;
-      height: 120px;
+      background: rgba(255, 255, 255, 0.7);
+      width: 130px;
+      height: 130px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      box-shadow: inset 0 2px 10px rgba(255, 255, 255, 0.5), 0 10px 20px rgba(180, 160, 170, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 
+        inset 0 4px 15px rgba(255, 255, 255, 0.6), 
+        0 15px 30px rgba(180, 160, 170, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .time-unit:hover {
+      transform: scale(1.05);
     }
 
     .time-unit .value {
-      font-size: 2.5rem;
-      font-weight: 600;
+      font-size: 2.8rem;
+      font-weight: 700;
       font-family: 'Playfair Display', serif;
       color: var(--primary);
       line-height: 1;
@@ -335,23 +376,24 @@
     }
 
     .time-unit .label {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
       color: var(--text-muted);
-      margin-top: 5px;
+      margin-top: 8px;
     }
 
     /* CLOSING */
     .closing {
       text-align: center;
-      padding-bottom: 120px;
+      padding-bottom: 150px;
     }
 
     .closing h2 {
-      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-size: clamp(2.8rem, 7vw, 4.5rem);
       color: #b8869c;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      font-family: 'Dancing Script', cursive;
     }
 
     /* AUDIO TOGGLE */
@@ -359,48 +401,49 @@
       position: fixed;
       bottom: 24px;
       left: 24px;
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.9);
-      box-shadow: 0 8px 24px rgba(180, 160, 170, 0.2);
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 1);
+      box-shadow: 0 10px 30px rgba(180, 170, 180, 0.25);
       cursor: pointer;
       display: grid;
       place-items: center;
       z-index: 100;
       color: var(--primary);
-      font-size: 1.2rem;
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
+      font-size: 1.4rem;
+      backdrop-filter: blur(12px);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .audio-toggle:hover {
-      transform: scale(1.05);
+      transform: scale(1.1) rotate(15deg);
       background: #fff;
+      color: var(--neon-pink);
     }
 
     @media(max-width: 768px) {
       .countdown-card {
-        padding: 30px 20px;
+        padding: 40px 20px;
       }
 
       .time-unit {
-        width: 90px;
-        height: 90px;
+        width: 100px;
+        height: 100px;
       }
 
       .time-unit .value {
-        font-size: 1.8rem;
+        font-size: 2rem;
       }
 
       .photos {
-        width: 240px;
-        height: 320px;
+        width: 250px;
+        height: 350px;
       }
 
       .story-card {
-        padding: 40px 20px;
+        padding: 40px 25px;
       }
     }
   </style>
@@ -418,94 +461,97 @@
   <div id="vanta-bg"></div>
 
   <header>
-    <div class="brand">Celebrando a Aby Alvarez</div>
+    <div class="brand">Un Latido, Mil Historias — Aby Alvarez</div>
   </header>
 
   <main>
     <!-- HERO SECTION -->
     <section class="hero gsap-hero">
-      <div class="hero-content glass gsap-fade">
-        <h1 class="serif">¡Feliz Cumpleaños,<br>Aby!</h1>
-        <p>Un cálido abrazo y los mejores deseos, envueltos en magia y cariño.</p>
+      <div class="hero-content glass">
+        <h1 class="serif" id="hero-title">
+          <span class="letter">¡</span><span class="letter">F</span><span class="letter">e</span><span class="letter">l</span><span class="letter">i</span><span class="letter">z</span> <span class="letter">C</span><span class="letter">u</span><span class="letter">m</span><span class="letter">p</span><span class="letter">l</span><span class="letter">e</span><span class="letter">a</span><span class="letter">ñ</span><span class="letter">o</span><span class="letter">s</span><span class="letter">,</span> <br>
+          <span class="letter">A</span><span class="letter">b</span><span class="letter">y</span><span class="letter">!</span>
+        </h1>
+        <p class="gsap-fade-slow">Donde el cielo se pinta de rosa y los sueños cobran vuelo en tu honor.</p>
       </div>
-      <div class="scroll-down">Desliza</div>
+      <div class="scroll-down">Desliza para ver la magia</div>
     </section>
 
-    <!-- STORY SECTION -->
+    <!-- CONTENT / POEM SECTION -->
     <section class="section">
       <div class="wrap">
         <div class="story-card glass gsap-fade">
-          <h2 class="serif section-title" style="margin-bottom: 30px; font-size: 2rem;">Para Ti</h2>
-          <p>Que este nuevo año esté lleno de alegría genuina, metas cumplidas y momentos que te hagan sonreír con el
-            alma.</p>
-          <p>Sigue siendo luz en la vida de quienes te rodean. Hoy celebramos tu historia, tu presente y todo lo
-            maravilloso que viene.</p>
+          <h2 class="serif section-title" style="margin-bottom: 35px; font-size: 2.2rem; font-family: 'Dancing Script', cursive;">Un Verso para Ti</h2>
+          <p>"Que hoy el viento susurre melodías de alegría y la luz del sol abrace cada uno de tus anhelos."</p>
+          <p>En este nuevo capítulo, deseo que tu corazón siga siendo ese jardín donde florece la bondad, y que cada paso te acerque más a la mujer radiante que Dios diseñó en ti.</p>
+          <p style="font-weight: 500; font-style: normal; font-size: 1.1rem; color: var(--primary);">Eres luz, eres magia, eres Aby.</p>
         </div>
       </div>
     </section>
 
-    <!-- HIGHLIGHTS SECTION -->
+    <!-- ATTRIBUTES SECTION -->
     <section class="section highlights">
       <div class="wrap">
-        <h2 class="section-title gsap-fade">Detalles que Inspiran</h2>
+        <h2 class="section-title gsap-fade">Esencia que Enamora</h2>
         <div class="highlights-grid">
           <div class="card glass gsap-stagger">
             <div class="card-icon">✨</div>
-            <h3 class="serif">Tu sonrisa ilumina</h3>
-            <p>Esa chispa que alegra días nublados y convierte momentos simples en memorables y especiales para todos.
-            </p>
+            <h3 class="serif">Brillo Genuino</h3>
+            <p>No es solo una luz, es una energía que transforma lo ordinario en algo extraordinario con solo estar presente.</p>
           </div>
           <div class="card glass gsap-stagger">
-            <div class="card-icon">🕊️</div>
-            <h3 class="serif">Sueños que crecen</h3>
-            <p>Paso a paso, constancia y Dios en el corazón: lo mejor en tu camino aún está por descubrirse.</p>
+            <div class="card-icon">🤍</div>
+            <h3 class="serif">Alma Valiente</h3>
+            <p>Tus sueños no tienen límites porque tu fe es el motor que te permite volar más alto de lo que imaginaste.</p>
           </div>
           <div class="card glass gsap-stagger">
-            <div class="card-icon">🌸</div>
-            <h3 class="serif">Energía que inspira</h3>
-            <p>Tu presencia motiva, empuja y enciende nuevas ideas, dejando una huella hermosa en cada paso.</p>
+            <div class="card-icon">🎨</div>
+            <h3 class="serif">Inspiración Viva</h3>
+            <p>Cada gesto tuyo es un trazo de arte en la vida de quienes te conocemos. Gracias por ser tal cual eres.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CREATIVE GALLERY SECTION (GSAP Pinned) -->
+    <!-- INTERACTIVE GALLERY -->
     <section class="gallery-wrap">
       <div class="gallery-container" id="gallery-container">
         <div class="gallery-sticky">
-          <h2 class="section-title serif gsap-fade" style="margin-bottom: 20px;">Instantes Capturados</h2>
-          <p class="gsap-fade" style="margin-bottom: 50px; color: var(--text-muted);">Momentos especiales que se guardan
-            en el corazón.</p>
+          <h2 class="section-title serif gsap-fade" style="margin-bottom: 25px; font-family: 'Dancing Script', cursive;">Danza de Recuerdos</h2>
+          <p class="gsap-fade" style="margin-bottom: 50px; color: var(--text-muted);">Fragmentos de una historia que sigue escribiéndose.</p>
 
           <div class="photos">
             <div class="photo-card p-1">
               <div class="tape"></div>
-              <img src="asset/img1.jpg" alt="Recuerdo 1">
+              <img src="asset/img1.jpg" alt="Alegres">
+              <div class="caption">Esencia</div>
             </div>
             <div class="photo-card p-2">
               <div class="tape"></div>
-              <img src="asset/img2.jpg" alt="Recuerdo 2">
+              <img src="asset/img2.jpg" alt="Momentos">
+              <div class="caption">Luz</div>
             </div>
             <div class="photo-card p-3">
               <div class="tape"></div>
-              <img src="asset/img4.jpg" alt="Recuerdo 3">
+              <img src="asset/img4.jpg" alt="Destiny">
+              <div class="caption">Magia</div>
             </div>
-            <!-- Optional 4th image if needed, utilizing img3.jpg -->
             <div class="photo-card p-4">
               <div class="tape"></div>
-              <img src="asset/img3.jpg" alt="Recuerdo 4">
+              <img src="asset/img3.jpg" alt="Reflections">
+              <div class="caption">Aby</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- COUNTDOWN SECTION -->
+    <!-- COUNTDOWN -->
     <section class="section">
       <div class="wrap">
         <div class="countdown-card glass gsap-fade">
-          <h2 class="serif" style="font-size: 2.2rem; color: #b8869c;">Próximo Cumpleaños</h2>
-          <p style="color: var(--text-muted); margin-top: 10px;">La magia se renueva el 25 de Septiembre</p>
+          <h2 class="serif" style="font-size: 2.5rem; color: #b8869c; font-family: 'Dancing Script', cursive;">Esperando tu Estreno</h2>
+          <p style="color: var(--text-muted); margin-top: 15px; letter-spacing: 0.05em;">La cuenta regresiva hacia un nuevo renacer.</p>
 
           <div class="countdown-grid">
             <div class="time-unit">
@@ -518,22 +564,22 @@
             </div>
             <div class="time-unit">
               <span class="value" id="d-m">00</span>
-              <span class="label">Minutos</span>
+              <span class="label">Mins.</span>
             </div>
             <div class="time-unit">
               <span class="value" id="d-s">00</span>
-              <span class="label">Segundos</span>
+              <span class="label">Segs.</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CLOSING -->
+    <!-- FINAL MESSAGE -->
     <section class="section closing gsap-fade">
       <div class="wrap">
-        <h2 class="serif">Muchas Felicidades</h2>
-        <p style="color: var(--text-muted); font-size: 1.2rem;">Con cariño, W.A.</p>
+        <h2 class="serif">Brilla Siempre, Aby..</h2>
+        <p style="color: var(--text-muted); font-size: 1.3rem; font-weight: 300; letter-spacing: 0.1em;">Hecho con todo el aprecio, W.A.</p>
       </div>
     </section>
   </main>
@@ -545,8 +591,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
   <script>
-    // --- VANTA BIRDS BACKGROUND ---
-    // Initiates the Three.js birds flying around interacting with mouse
+    // --- VANTA BIRDS ---
     VANTA.BIRDS({
       el: "#vanta-bg",
       mouseControls: true,
@@ -557,63 +602,66 @@
       scale: 1.00,
       scaleMobile: 1.00,
       backgroundColor: 0xfdfafb,
-      color1: 0xffadc9, // Soft pink/rose gold touch for birds
-      color2: 0x82b2ff, // Soft RGB blueish touch 
+      color1: 0xffadc9,
+      color2: 0x82b2ff,
       colorMode: "variance",
-      birdSize: 1.40,
-      wingSpan: 30.00,
-      speedLimit: 4.00,
-      separation: 30.00,
-      alignment: 30.00,
-      cohesion: 30.00,
-      quantity: 4.00 // Elegance isn't crowded
+      birdSize: 1.50,
+      wingSpan: 34.00,
+      speedLimit: 4.50,
+      separation: 35.00,
+      alignment: 35.00,
+      cohesion: 35.00,
+      quantity: 5.00
     });
 
-    // --- AUDIO CONTROL ---
+    // --- AUDIO ---
     const audio = document.getElementById('bg-audio');
     const audioToggle = document.getElementById('audio-toggle');
     let isPlaying = false;
-
-    audio.volume = 0.3; // Soft ambient volume
+    audio.volume = 0.35;
 
     audioToggle.addEventListener('click', () => {
       if (isPlaying) {
         audio.pause();
         audioToggle.textContent = '🎵';
-        audioToggle.style.opacity = '0.8';
       } else {
-        audio.play().catch(e => console.log("Audio play prevented"));
+        audio.play().catch(e => console.log("Audio limited"));
         audioToggle.textContent = '⏸';
-        audioToggle.style.opacity = '1';
       }
       isPlaying = !isPlaying;
     });
 
-    // Auto-play attempt on interaction
     document.body.addEventListener('click', () => {
       if (!isPlaying) {
         audio.play().then(() => {
           isPlaying = true;
           audioToggle.textContent = '⏸';
-          audioToggle.style.opacity = '1';
         }).catch(() => { });
       }
     }, { once: true });
 
 
-    // --- GSAP ANIMATIONS ---
+    // --- GSAP REVEALS ---
     gsap.registerPlugin(ScrollTrigger);
 
-    // Initial Hero Animation
-    gsap.from(".hero-content", {
+    // Dynamic Entrance for letters
+    gsap.from(".letter", {
       opacity: 0,
-      y: 40,
-      duration: 1.5,
-      ease: "power3.out",
-      delay: 0.2
+      y: 50,
+      rotateX: -90,
+      stagger: 0.05,
+      duration: 1.2,
+      ease: "back.out(1.7)",
+      delay: 0.5
     });
 
-    // General scroll reveals
+    gsap.from(".gsap-fade-slow", {
+      opacity: 0,
+      duration: 2,
+      ease: "power2.inOut",
+      delay: 1.2
+    });
+
     gsap.utils.toArray('.gsap-fade').forEach(elem => {
       gsap.from(elem, {
         scrollTrigger: {
@@ -622,8 +670,8 @@
         },
         y: 40,
         opacity: 0,
-        duration: 1.2,
-        ease: "power2.out"
+        duration: 1.4,
+        ease: "power3.out"
       });
     });
 
@@ -633,74 +681,94 @@
           trigger: elem.parentElement,
           start: "top 80%",
         },
-        y: 40,
+        y: 50,
         opacity: 0,
-        duration: 1,
-        delay: index * 0.2,
-        ease: "power2.out"
+        duration: 1.2,
+        delay: index * 0.22,
+        ease: "power3.out"
       });
     });
 
-    // PHOTOS FAN-OUT GALLERY
-    // Beautiful interactive fan out based on scroll
+    // --- PHOTO "DANCE" ANIMATION ---
     const tlGallery = gsap.timeline({
       scrollTrigger: {
         trigger: "#gallery-container",
         start: "top top",
         end: "bottom bottom",
-        scrub: 1
+        scrub: 1.5,
+        pin: true
       }
     });
 
-    // Initial state setup for cards (stacked)
-    gsap.set('.p-1', { rotation: 0, zIndex: 4 });
-    gsap.set('.p-2', { rotation: 0, zIndex: 3 });
-    gsap.set('.p-3', { rotation: 0, zIndex: 2 });
-    gsap.set('.p-4', { rotation: 0, zIndex: 1 });
+    // Intro "Dance" - Fast jittery movement at start
+    tlGallery.fromTo('.photo-card', 
+      { rotation: () => Math.random() * 40 - 20, x: () => Math.random() * 400 - 200, y: () => Math.random() * 400 - 200, scale: 0.5, opacity: 0 },
+      { rotation: 0, x: 0, y: 0, scale: 1, opacity: 1, duration: 0.2, stagger: 0.05, ease: "power1.inOut" }, 
+      0
+    );
 
-    // Animate them fanning out
-    tlGallery.to('.p-1', { x: -150, y: 20, rotation: -15, scale: 1.05, ease: "none" }, 0)
-      .to('.p-2', { x: -50, y: -20, rotation: -5, scale: 1.05, ease: "none" }, 0)
-      .to('.p-3', { x: 50, y: 10, rotation: 5, scale: 1.05, ease: "none" }, 0)
-      .to('.p-4', { x: 150, y: 40, rotation: 15, scale: 1.05, ease: "none" }, 0);
+    // Fast swirl dance
+    tlGallery.to('.p-1', { rotation: 360, x: -100, y: -50, scale: 0.8, duration: 0.2 }, 0.2);
+    tlGallery.to('.p-2', { rotation: -360, x: 100, y: 50, scale: 0.8, duration: 0.2 }, 0.2);
+    tlGallery.to('.p-3', { rotation: 180, x: 50, y: -100, scale: 0.9, duration: 0.2 }, 0.2);
+    tlGallery.to('.p-4', { rotation: -180, x: -50, y: 110, scale: 0.9, duration: 0.2 }, 0.2);
+
+    // Gradual slowing transition to Smooth Slide / Fan Out
+    tlGallery.to('.p-1', { x: -180, y: 30, rotation: -15, scale: 1.08, duration: 0.8, ease: "power2.out" }, 0.45)
+             .to('.p-2', { x: -60, y: -30, rotation: -5, scale: 1.08, duration: 0.8, ease: "power2.out" }, 0.45)
+             .to('.p-3', { x: 60, y: 15, rotation: 10, scale: 1.08, duration: 0.8, ease: "power2.out" }, 0.45)
+             .to('.p-4', { x: 180, y: 50, rotation: 20, scale: 1.08, duration: 0.8, ease: "power2.out" }, 0.45);
 
 
-    // --- COUNTDOWN LOGIC ---
+    // --- LETTER JUMP LOGIC ---
+    document.querySelectorAll('.letter').forEach(span => {
+      span.addEventListener('mouseenter', () => {
+        gsap.to(span, {
+          y: -25,
+          scale: 1.2,
+          rotation: 10,
+          color: '#ff6ace',
+          duration: 0.4,
+          ease: "back.out(2)"
+        });
+      });
+      span.addEventListener('mouseleave', () => {
+        gsap.to(span, {
+          y: 0,
+          scale: 1,
+          rotation: 0,
+          color: 'white',
+          duration: 0.6,
+          ease: "elastic.out(1, 0.3)"
+        });
+      });
+    });
+
+
+    // --- COUNTDOWN ---
     const dd = document.getElementById('d-day');
     const dh = document.getElementById('d-h');
     const dm = document.getElementById('d-m');
     const ds = document.getElementById('d-s');
 
-    const BIRTHDAY_MONTH = 8; // September (0-indexed)
+    const BIRTHDAY_MONTH = 8; 
     const BIRTHDAY_DAY = 25;
 
     function getNextBirthday(reference) {
       const target = new Date(reference.getFullYear(), BIRTHDAY_MONTH, BIRTHDAY_DAY, 0, 0, 0, 0);
-      if (target <= reference) {
-        target.setFullYear(target.getFullYear() + 1);
-      }
+      if (target <= reference) target.setFullYear(target.getFullYear() + 1);
       return target;
     }
 
-    let birthdayTarget = getNextBirthday(new Date());
+    let bDay = getNextBirthday(new Date());
 
     function tick() {
-      const current = new Date();
-      if (current > birthdayTarget) {
-        birthdayTarget = getNextBirthday(current);
-      }
-
-      const totalSeconds = Math.max(0, Math.floor((birthdayTarget - current) / 1000));
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-
-      dd.textContent = String(days).padStart(2, '0');
-      dh.textContent = String(hours).padStart(2, '0');
-      dm.textContent = String(minutes).padStart(2, '0');
-      ds.textContent = String(seconds).padStart(2, '0');
-
+      const diff = bDay - new Date();
+      const s = Math.max(0, Math.floor(diff / 1000));
+      dd.textContent = String(Math.floor(s / 86400)).padStart(2, '0');
+      dh.textContent = String(Math.floor((s % 86400) / 3600)).padStart(2, '0');
+      dm.textContent = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+      ds.textContent = String(s % 60).padStart(2, '0');
       requestAnimationFrame(tick);
     }
     tick();
