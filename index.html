@@ -115,7 +115,8 @@
       line-height: 1.1;
       margin-bottom: 30px;
       position: relative;
-      color: #fff;
+      color: white;
+      /* Fixed: Ensure color is explicitly white to show neons better */
       text-shadow: 
         0 0 7px #fff,
         0 0 10px #fff,
@@ -130,6 +131,7 @@
       display: inline-block;
       cursor: pointer;
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
+      color: white;
     }
 
     .letter:hover {
@@ -255,8 +257,8 @@
     }
 
     .gallery-container {
-      height: 450vh;
-      /* Extended space for the "dance" Intro */
+      height: 550vh;
+      /* Extra space for spacing out photos */
       position: relative;
     }
 
@@ -280,7 +282,7 @@
       position: relative;
       width: 320px;
       height: 420px;
-      perspective: 1000px;
+      perspective: 1200px;
     }
 
     .photo-card {
@@ -327,6 +329,25 @@
       background: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(5px);
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    /* CREATIVE QUOTE BEFORE COUNTDOWN */
+    .quote-divider {
+      text-align: center;
+      padding: 80px 0;
+      position: relative;
+    }
+    .quote-divider .line {
+      width: 150px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      margin: 20px auto;
+    }
+    .quote-divider blockquote {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem;
+      color: var(--primary);
+      margin: 0;
     }
 
     /* COUNTDOWN */
@@ -546,6 +567,13 @@
       </div>
     </section>
 
+    <!-- CREATIVE QUOTE DIVIDER -->
+    <div class="quote-divider gsap-fade">
+      <div class="line"></div>
+      <blockquote>Cada momento es una joya.</blockquote>
+      <div class="line"></div>
+    </div>
+
     <!-- COUNTDOWN -->
     <section class="section">
       <div class="wrap">
@@ -702,22 +730,22 @@
 
     // Intro "Dance" - Fast jittery movement at start
     tlGallery.fromTo('.photo-card', 
-      { rotation: () => Math.random() * 40 - 20, x: () => Math.random() * 400 - 200, y: () => Math.random() * 400 - 200, scale: 0.5, opacity: 0 },
-      { rotation: 0, x: 0, y: 0, scale: 1, opacity: 1, duration: 0.2, stagger: 0.05, ease: "power1.inOut" }, 
+      { rotation: () => Math.random() * 60 - 30, x: () => Math.random() * 800 - 400, y: () => Math.random() * 600 - 300, scale: 0.3, opacity: 0 },
+      { rotation: 0, x: 0, y: 0, scale: 1, opacity: 1, duration: 0.3, stagger: 0.08, ease: "power2.out" }, 
       0
     );
 
-    // Fast swirl dance
-    tlGallery.to('.p-1', { rotation: 360, x: -100, y: -50, scale: 0.8, duration: 0.2 }, 0.2);
-    tlGallery.to('.p-2', { rotation: -360, x: 100, y: 50, scale: 0.8, duration: 0.2 }, 0.2);
-    tlGallery.to('.p-3', { rotation: 180, x: 50, y: -100, scale: 0.9, duration: 0.2 }, 0.2);
-    tlGallery.to('.p-4', { rotation: -180, x: -50, y: 110, scale: 0.9, duration: 0.2 }, 0.2);
+    // Swirl dance (slowing down)
+    tlGallery.to('.p-1', { rotation: 360, x: -150, y: -80, scale: 0.8, duration: 0.3 }, 0.25);
+    tlGallery.to('.p-2', { rotation: -360, x: 150, y: 80, scale: 0.8, duration: 0.3 }, 0.25);
+    tlGallery.to('.p-3', { rotation: 180, x: 80, y: -150, scale: 0.9, duration: 0.3 }, 0.25);
+    tlGallery.to('.p-4', { rotation: -180, x: -80, y: 150, scale: 0.9, duration: 0.3 }, 0.25);
 
-    // Gradual slowing transition to Smooth Slide / Fan Out
-    tlGallery.to('.p-1', { x: -180, y: 30, rotation: -15, scale: 1.08, duration: 0.8, ease: "power2.out" }, 0.45)
-             .to('.p-2', { x: -60, y: -30, rotation: -5, scale: 1.08, duration: 0.8, ease: "power2.out" }, 0.45)
-             .to('.p-3', { x: 60, y: 15, rotation: 10, scale: 1.08, duration: 0.8, ease: "power2.out" }, 0.45)
-             .to('.p-4', { x: 180, y: 50, rotation: 20, scale: 1.08, duration: 0.8, ease: "power2.out" }, 0.45);
+    // FINAL SMOOTH FAN OUT - Increased spacing (X: -280 to 280)
+    tlGallery.to('.p-1', { x: -280, y: 40, rotation: -20, scale: 1.1, duration: 1, ease: "power2.inOut" }, 0.6)
+             .to('.p-2', { x: -100, y: -40, rotation: -8, scale: 1.1, duration: 1, ease: "power2.inOut" }, 0.6)
+             .to('.p-3', { x: 100, y: 20, rotation: 8, scale: 1.1, duration: 1, ease: "power2.inOut" }, 0.6)
+             .to('.p-4', { x: 280, y: 60, rotation: 20, scale: 1.1, duration: 1, ease: "power2.inOut" }, 0.6);
 
 
     // --- LETTER JUMP LOGIC ---
