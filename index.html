@@ -467,6 +467,75 @@
         padding: 40px 25px;
       }
     }
+
+    /* SURPRISE BUTTON & OVERLAY */
+    .btn-surprise {
+      margin-top: 40px;
+      padding: 15px 40px;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.8rem;
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      box-shadow: 0 10px 20px rgba(194, 125, 143, 0.2);
+    }
+
+    .btn-surprise.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .btn-surprise:hover {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1);
+      box-shadow: 0 15px 30px rgba(194, 125, 143, 0.4);
+    }
+
+    #surprise-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(253, 250, 251, 0.95);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+      text-align: center;
+    }
+
+    #surprise-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .cake-container {
+      font-size: 8rem;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 20px rgba(194, 125, 143, 0.3));
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    .final-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(3rem, 10vw, 6rem);
+      color: var(--primary);
+      text-shadow: 0 0 20px rgba(194, 125, 143, 0.3);
+    }
   </style>
 </head>
 
@@ -608,9 +677,15 @@
       <div class="wrap">
         <h2 class="serif">Brilla Siempre, Aby..</h2>
         <p style="color: var(--text-muted); font-size: 1.3rem; font-weight: 300; letter-spacing: 0.1em;">Hecho con todo el aprecio, W.A.</p>
+        <button class="btn-surprise" id="btn-surprise">¡Sorpresa!</button>
       </div>
     </section>
   </main>
+
+  <div id="surprise-overlay">
+    <div class="cake-container">🎂</div>
+    <h1 class="final-text">¡Feliz Cumpleaños!</h1>
+  </div>
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
@@ -620,7 +695,7 @@
 
   <script>
     // --- VANTA BIRDS ---
-    VANTA.BIRDS({
+    let vantaEffect = VANTA.BIRDS({
       el: "#vanta-bg",
       mouseControls: true,
       touchControls: true,
@@ -800,6 +875,61 @@
     }
     tick();
 
+    // --- SURPRISE LOGIC ---
+    const btnSurprise = document.getElementById('btn-surprise');
+    const overlay = document.getElementById('surprise-overlay');
+
+    // Show button when scrolled to bottom
+    ScrollTrigger.create({
+      trigger: ".closing",
+      start: "bottom bottom",
+      onEnter: () => btnSurprise.classList.add('visible')
+    });
+
+    btnSurprise.addEventListener('click', () => {
+      // 1. Birds converge (Change Vanta settings to "Watch")
+      // We simulate birds "watching" by decreasing separation and speed
+      vantaEffect.setOptions({
+        separation: 10.00,
+        alignment: 10.00,
+        cohesion: 80.00,
+        speedLimit: 1.00,
+        quantity: 15.00 // More birds for the finale
+      });
+
+      // 2. Show Overlay
+      overlay.classList.add('active');
+
+      // 3. Simple Confetti
+      for (let i = 0; i < 100; i++) {
+        createConfetti();
+      }
+
+      // 4. GSAP Finale
+      gsap.from(".cake-container", { scale: 0, rotation: 720, duration: 1.5, ease: "back.out(1.7)" });
+      gsap.from(".final-text", { opacity: 0, y: 50, delay: 0.5, duration: 1 });
+      
+      btnSurprise.style.display = 'none';
+    });
+
+    function createConfetti() {
+      const colors = ['#f2d74e', '#95c3de', '#ff9a91', '#f2d74e', '#c27d8f'];
+      const div = document.createElement('div');
+      div.className = 'confetti';
+      div.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      div.style.left = Math.random() * 100 + 'vw';
+      div.style.top = -10 + 'px';
+      overlay.appendChild(div);
+
+      gsap.to(div, {
+        y: '105vh',
+        x: (Math.random() - 0.5) * 400,
+        rotation: Math.random() * 360,
+        duration: Math.random() * 3 + 2,
+        ease: "power1.out",
+        onComplete: () => div.remove()
+      });
+    }
   </script>
 </body>
 
